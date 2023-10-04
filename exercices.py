@@ -285,7 +285,7 @@ def grid_world_value_iteration(
 
         diff = np.max(np.abs(values - prev_val))
         i += 1
-    
+
     return values
     # END SOLUTION
 
@@ -347,7 +347,7 @@ def stochastic_grid_world_value_iteration(
 ) -> np.ndarray:
     values = np.zeros((4, 4))
     # BEGIN SOLUTION
-    grid_world_value_iteration(env=env)
+    values = grid_world_value_iteration(env=env)
     # END SOLUTION
     return values
 
@@ -364,7 +364,7 @@ def test_stochastic_grid_world_value_iteration():
             [1.0, 1.0, 1.0, 1.0],
         ]
     )
-    assert np.allclose(values, solution)
+    assert np.allclose(values, solution), print(values)
 
     values = stochastic_grid_world_value_iteration(env, max_iter=1000, gamma=0.9)
     solution = np.array(
@@ -507,3 +507,11 @@ def domino_paving(n: int) -> int:
 )
 def test_domino_paving(n, expected):
     assert domino_paving(n) == expected
+
+def test_wall():
+    env = GridWorldEnv()
+    for i in range(2):
+        env.step(0)
+    old_position = env.current_position
+    env.step(3)
+    assert old_position == env.current_position
