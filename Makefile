@@ -6,6 +6,7 @@ testsuite: reformat
 
 
 tiny-testsuite: reformat
+	$(PYTHON) -m pytest sup-tests.py
 	$(PYTHON) tiny-test.py
 
 reformat: 

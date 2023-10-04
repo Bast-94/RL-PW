@@ -177,15 +177,19 @@ class GridWorldEnv(gym.Env):
             ["S", "F", "F", "F"],
         ]
     )
-    current_position: tuple[int, int] = (0, 0)
+    current_position: tuple[int, int] = (3, 0)
 
     def __init__(self):
         super(GridWorldEnv, self).__init__()
 
         self.action_space = spaces.Discrete(4)  # Up, Down, Left, Right
-        self.observation_space = spaces.Tuple((spaces.Discrete(4), spaces.Discrete(4)))
+        self.width = 4
+        self.height = 4
+        self.observation_space = spaces.Tuple(
+            (spaces.Discrete(self.width), spaces.Discrete(self.height))
+        )
 
-        self.current_position = (0, 0)
+        # self.current_position = (0, 0)
 
     def step(self, action):
         new_pos = self.current_position
@@ -209,7 +213,7 @@ class GridWorldEnv(gym.Env):
                 self.current_position[0],
                 min(3, self.current_position[1] + 1),
             )
-        if(self.grid[tuple(new_pos)] != 'W'):
+        if self.grid[tuple(new_pos)] != "W":
             self.current_position = new_pos
         next_state = tuple(self.current_position)
 
@@ -227,13 +231,13 @@ class GridWorldEnv(gym.Env):
         return next_state, reward, is_done, {}
 
     def reset(self):
-        self.current_position = (0, 0)  # Start Position
+        self.current_position = (3, 0)  # Start Position
         return self.current_position
 
     def render(self):
         for row in range(4):
             for col in range(4):
-                if self.current_position == [row, col]:
+                if self.current_position == tuple([row, col]):
                     print("X", end=" ")
                 else:
                     print(self.grid[row, col], end=" ")
@@ -255,14 +259,18 @@ def grid_world_value_iteration(
     diff = theta
     i = 0
     while i < max_iter and diff >= theta:
+        for row in range(env.height):
+            for col in range(env.width):
+                for action in range(env.action_space.n):
+                    print(f"state :{(row,col)} {action = }")
         i += 1
     # END SOLUTION
 
 
-def test_grid_world_value_iteration():
+def test_grid_world_value_iteration(max_iter=1000):
     env = GridWorldEnv()
 
-    values = grid_world_value_iteration(env, max_iter=1000, gamma=1.0)
+    values = grid_world_value_iteration(env, max_iter, gamma=1.0)
     solution = np.array(
         [
             [1.0, 1.0, 1.0, 0.0],
@@ -273,7 +281,7 @@ def test_grid_world_value_iteration():
     )
     assert np.allclose(values, solution)
 
-    values = grid_world_value_iteration(env, max_iter=1000, gamma=0.9)
+    values = grid_world_value_iteration(env, max_iter, gamma=0.9)
     solution = np.array(
         [
             [0.81, 0.9, 1.0, 0.0],
