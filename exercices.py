@@ -283,7 +283,9 @@ def grid_world_value_iteration(
                         values[state] = current_val
                         best_val = current_val
 
+        diff = np.max(np.abs(values - prev_val))
         i += 1
+    
     return values
     # END SOLUTION
 
@@ -345,6 +347,7 @@ def stochastic_grid_world_value_iteration(
 ) -> np.ndarray:
     values = np.zeros((4, 4))
     # BEGIN SOLUTION
+    grid_world_value_iteration(env=env)
     # END SOLUTION
     return values
 
