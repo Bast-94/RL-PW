@@ -3,13 +3,13 @@ Ce fichier contient des exercices à compléter sur la programmation dynamique.
 Il est évalué automatiquement avec pytest, vous pouvez le lancer avec la
 commande `pytest exercices.py`.
 """
-import typing as t
 import random
-import pytest
-import numpy as np
-import gym
-from gym import spaces
+import typing as t
 
+import gym
+import numpy as np
+import pytest
+from gym import spaces
 
 """
 Partie 1 - Processus décisionnels de Markov
@@ -52,22 +52,23 @@ class MDP(gym.Env):
 
     def __init__(self):
         # BEGIN SOLUTION
-        self.P = [ [(1, -1.0, False),(0, -1.0, False)],
-            [(0, -1.0, False),(2, -1.0, False)],
-            [(2, 0.0, False),(0, -1.0, False)]
+        self.P = [
+            [(1, -1.0, False), (0, -1.0, False)],
+            [(0, -1.0, False), (2, -1.0, False)],
+            [(2, 0.0, False), (0, -1.0, False)],
         ]
         self.initial_state = random.randint(0, 2)
         self.observation_space = spaces.Discrete(n=len(self.P))
         self.action_space = spaces.Discrete(n=len(self.P[0]))
         # END SOLUTION
 
-    def reset_state(self, value:t.Optional[int] =None):
-        if (value is None):
+    def reset_state(self, value: t.Optional[int] = None):
+        if value is None:
             self.initial_state = random.randint(0, 2)
         else:
             self.initial_state = value
 
-    def step(self, action: int,transition:bool=True) -> tuple[int, float, bool, dict]:  # type: ignore
+    def step(self, action: int, transition: bool = True) -> tuple[int, float, bool, dict]:  # type: ignore
         """
         Effectue une transition dans le MDP.
         Renvoie l'observation suivante, la récompense, un booléen indiquant
@@ -76,9 +77,9 @@ class MDP(gym.Env):
         # BEGIN SOLUTION
         result_dict = {}
         next_state, reward, done = self.P[self.initial_state][action]
-        if(transition):
+        if transition:
             self.initial_state = next_state
-        return (next_state, reward, done,result_dict)
+        return (next_state, reward, done, result_dict)
         # END SOLUTION
 
 
@@ -124,35 +125,31 @@ def mdp_value_iteration(mdp: MDP, max_iter: int = 1000, gamma=1.0) -> np.ndarray
     # BEGIN SOLUTION
     for i in range(max_iter):
         prev_val = np.copy(values)
-        print(f'{i=}')
+        print(f"{i=}")
         print(values)
         for state in range(len(mdp.P)):
             mdp.reset_state(state)
-            best_val = float('-inf')
-            print(f'State {state}')
+            best_val = float("-inf")
+            print(f"State {state}")
             for action in range(len(mdp.P[0])):
-                next_state, reward,_,_ = mdp.step(action,transition=False)
-                current_val = (reward+ gamma*prev_val[next_state])
-                print(f'{reward = } {next_state = } {prev_val[next_state] =}')
+                next_state, reward, _, _ = mdp.step(action, transition=False)
+                current_val = reward + gamma * prev_val[next_state]
+                print(f"{reward = } {next_state = } {prev_val[next_state] =}")
 
-                if (current_val>best_val):
+                if current_val > best_val:
                     prev_val[state] = current_val
                     best_val = current_val
-                    
-            
+
         values = prev_val
 
-                
-
-        
     # END SOLUTION
     return values
 
 
-def test_mdp_value_iteration(max_iter:int=1000):
+def test_mdp_value_iteration(max_iter: int = 1000):
     mdp = MDP()
     values = mdp_value_iteration(mdp, max_iter=max_iter, gamma=1.0)
-    assert np.allclose(values, [-2, -1, 0]),print(values)
+    assert np.allclose(values, [-2, -1, 0]), print(values)
     values = mdp_value_iteration(mdp, max_iter=max_iter, gamma=0.9)
     assert np.allclose(values, [-1.9, -1, 0])
 

@@ -1,8 +1,13 @@
 PYTHON=python3.10
 
 
-testsuite:
+testsuite: reformat
 	$(PYTHON) -m pytest exercices.py
 
-tiny-testsuite:
+
+tiny-testsuite: reformat
 	$(PYTHON) tiny-test.py
+
+reformat: 
+	$(PYTHON) -m black .
+	$(PYTHON) -m isort .
