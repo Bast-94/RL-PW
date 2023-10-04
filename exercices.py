@@ -186,13 +186,17 @@ class GridWorldEnv(gym.Env):
         self.width = 4
         self.height = 4
         self.observation_space = spaces.Tuple(
-            (spaces.Discrete(self.width), spaces.Discrete(self.height))
+            (spaces.Discrete(self.height), spaces.Discrete(self.width))
         )
+        self.moving_prob = np.ones(shape=(self.height, self.width, self.action_space.n))
+        zero_mask = (self.grid == "W") | (self.grid == "P") | (self.grid == "N")
 
+        self.moving_prob[np.where(zero_mask)] = 0
         # self.current_position = (0, 0)
 
     def step(self, action):
         new_pos = self.current_position
+        old_pos = self.current_position
         if action == 0:  # Up
             new_pos = (
                 max(0, self.current_position[0] - 1),
@@ -215,19 +219,22 @@ class GridWorldEnv(gym.Env):
             )
         if self.grid[tuple(new_pos)] != "W":
             self.current_position = new_pos
+
         next_state = tuple(self.current_position)
 
         # Check if the agent has reached the goal
         is_done = self.grid[tuple(self.current_position)] in {"P", "N"}
 
         # Provide reward
-        if self.grid[tuple(self.current_position)] == "N":
-            reward = -1
-        elif self.grid[tuple(self.current_position)] == "P":
-            reward = 1
+        if old_pos != new_pos:
+            if self.grid[tuple(self.current_position)] == "N":
+                reward = -1
+            elif self.grid[tuple(self.current_position)] == "P":
+                reward = 1
+            else:
+                reward = 0
         else:
             reward = 0
-
         return next_state, reward, is_done, {}
 
     def reset(self):
@@ -259,11 +266,25 @@ def grid_world_value_iteration(
     diff = theta
     i = 0
     while i < max_iter and diff >= theta:
+        prev_val = np.copy(values)
         for row in range(env.height):
             for col in range(env.width):
+                best_val = float("-inf")
+                state = (row, col)
+                env.current_position = state
                 for action in range(env.action_space.n):
-                    print(f"state :{(row,col)} {action = }")
+                    next_state, reward, _, _ = env.step(action)
+
+                    env.current_position = state
+                    current_val = (
+                        reward + gamma * prev_val[next_state]
+                    ) * env.moving_prob[row, col, action]
+                    if current_val > best_val:
+                        values[state] = current_val
+                        best_val = current_val
+
         i += 1
+    return values
     # END SOLUTION
 
 
@@ -279,7 +300,8 @@ def test_grid_world_value_iteration(max_iter=1000):
             [1.0, 1.0, 1.0, 1.0],
         ]
     )
-    assert np.allclose(values, solution)
+
+    assert np.allclose(values, solution), print(values)
 
     values = grid_world_value_iteration(env, max_iter, gamma=0.9)
     solution = np.array(
