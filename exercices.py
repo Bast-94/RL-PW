@@ -57,6 +57,8 @@ class MDP(gym.Env):
             [(2, 0.0, False),(0, -1.0, False)]
         ]
         self.initial_state = random.randint(0, 2)
+        self.observation_space = spaces.Discrete(n=len(self.P))
+        self.action_space = spaces.Discrete(n=len(self.P[0]))
         # END SOLUTION
 
     def reset_state(self):
