@@ -52,7 +52,15 @@ class MDP(gym.Env):
 
     def __init__(self):
         # BEGIN SOLUTION
+        self.P = [ [(1, -1.0, False),(0, -1.0, False)],
+            [(0, -1.0, False),(2, -1.0, False)],
+            [(2, 0.0, False),(0, -1.0, False)]
+        ]
+        self.initial_state = random.randint(0, 2)
         # END SOLUTION
+
+    def reset_state(self):
+        self.initial_state = random.randint(0, 2)
 
     def step(self, action: int) -> tuple[int, float, bool, dict]:  # type: ignore
         """
@@ -61,6 +69,10 @@ class MDP(gym.Env):
         si l'épisode est terminé, et un dictionnaire d'informations.
         """
         # BEGIN SOLUTION
+        result_dict = {}
+        next_state, reward, done = self.P[self.initial_state][action]
+        self.initial_state = next_state
+        return (next_state, reward, done,result_dict)
         # END SOLUTION
 
 
@@ -77,7 +89,7 @@ def test_mdp():
     mdp.reset()
     ret = mdp.step(0)
     assert ret[0] in [0, 1, 2]
-    assert ret[1] in [0, 1]
+    assert ret[1] in [0, -1]
     assert ret[2] in [True, False]
     assert isinstance(ret[3], dict)
 
