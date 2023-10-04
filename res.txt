@@ -1,0 +1,67 @@
+python3.10 tiny-test.py
+i=0
+[0. 0. 0.]
+State 0
+reward = -1.0 next_state = 1 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.0
+State 1
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.0
+reward = -1.0 next_state = 2 prev_val[next_state] =0.0
+State 2
+reward = 0.0 next_state = 2 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.0
+i=1
+[-1. -1.  0.]
+State 0
+reward = -1.0 next_state = 1 prev_val[next_state] =-1.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-2.0
+State 1
+reward = -1.0 next_state = 0 prev_val[next_state] =-2.0
+reward = -1.0 next_state = 2 prev_val[next_state] =0.0
+State 2
+reward = 0.0 next_state = 2 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-2.0
+i=2
+[-2. -1.  0.]
+State 0
+reward = -1.0 next_state = 1 prev_val[next_state] =-1.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-2.0
+State 1
+reward = -1.0 next_state = 0 prev_val[next_state] =-2.0
+reward = -1.0 next_state = 2 prev_val[next_state] =0.0
+State 2
+reward = 0.0 next_state = 2 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-2.0
+i=0
+[0. 0. 0.]
+State 0
+reward = -1.0 next_state = 1 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.0
+State 1
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.0
+reward = -1.0 next_state = 2 prev_val[next_state] =0.0
+State 2
+reward = 0.0 next_state = 2 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.0
+i=1
+[-1. -1.  0.]
+State 0
+reward = -1.0 next_state = 1 prev_val[next_state] =-1.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.9
+State 1
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.9
+reward = -1.0 next_state = 2 prev_val[next_state] =0.0
+State 2
+reward = 0.0 next_state = 2 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.9
+i=2
+[-1.9 -1.   0. ]
+State 0
+reward = -1.0 next_state = 1 prev_val[next_state] =-1.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.9
+State 1
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.9
+reward = -1.0 next_state = 2 prev_val[next_state] =0.0
+State 2
+reward = 0.0 next_state = 2 prev_val[next_state] =0.0
+reward = -1.0 next_state = 0 prev_val[next_state] =-1.9
