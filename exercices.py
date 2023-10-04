@@ -125,16 +125,14 @@ def mdp_value_iteration(mdp: MDP, max_iter: int = 1000, gamma=1.0) -> np.ndarray
     # BEGIN SOLUTION
     for i in range(max_iter):
         prev_val = np.copy(values)
-        print(f"{i=}")
-        print(values)
+
         for state in range(len(mdp.P)):
             mdp.reset_state(state)
             best_val = float("-inf")
-            print(f"State {state}")
+
             for action in range(len(mdp.P[0])):
                 next_state, reward, _, _ = mdp.step(action, transition=False)
                 current_val = reward + gamma * prev_val[next_state]
-                print(f"{reward = } {next_state = } {prev_val[next_state] =}")
 
                 if current_val > best_val:
                     prev_val[state] = current_val
@@ -190,27 +188,29 @@ class GridWorldEnv(gym.Env):
         self.current_position = (0, 0)
 
     def step(self, action):
+        new_pos = self.current_position
         if action == 0:  # Up
-            self.current_position = (
+            new_pos = (
                 max(0, self.current_position[0] - 1),
                 self.current_position[1],
             )
         elif action == 1:  # Down
-            self.current_position = (
+            new_pos = (
                 min(3, self.current_position[0] + 1),
                 self.current_position[1],
             )
         elif action == 2:  # Left
-            self.current_position = (
+            new_pos = (
                 self.current_position[0],
                 max(0, self.current_position[1] - 1),
             )
         elif action == 3:  # Right
-            self.current_position = (
+            new_pos = (
                 self.current_position[0],
                 min(3, self.current_position[1] + 1),
             )
-
+        if(self.grid[tuple(new_pos)] != 'W'):
+            self.current_position = new_pos
         next_state = tuple(self.current_position)
 
         # Check if the agent has reached the goal
@@ -252,6 +252,10 @@ def grid_world_value_iteration(
     """
     values = np.zeros((4, 4))
     # BEGIN SOLUTION
+    diff = theta
+    i = 0
+    while i < max_iter and diff >= theta:
+        i += 1
     # END SOLUTION
 
 
