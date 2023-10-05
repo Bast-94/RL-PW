@@ -2,7 +2,7 @@ PYTHON=python3.10
 
 
 testsuite: reformat
-	$(PYTHON) -m pytest exercices.py
+	$(PYTHON) -m pytest -q exercices.py
 
 
 tiny-testsuite: reformat
