@@ -197,19 +197,25 @@ class GridWorldEnv(gym.Env):
     def set_state(self, row: int, col: int) -> None:
         self.current_position = (row, col)
 
+    def up_position(self):
+        return (
+            max(0, self.current_position[0] - 1),
+            self.current_position[1],
+        )
+
+    def down_position(self):
+        return (
+            min(3, self.current_position[0] + 1),
+            self.current_position[1],
+        )
+
     def step(self, action, make_move: bool = True):
         new_pos = self.current_position
         old_pos = self.current_position
         if action == 0:  # Up
-            new_pos = (
-                max(0, self.current_position[0] - 1),
-                self.current_position[1],
-            )
+            new_pos = self.up_position()
         elif action == 1:  # Down
-            new_pos = (
-                min(3, self.current_position[0] + 1),
-                self.current_position[1],
-            )
+            new_pos = self.down_position()
         elif action == 2:  # Left
             new_pos = (
                 self.current_position[0],
@@ -353,8 +359,12 @@ class StochasticGridWorldEnv(GridWorldEnv):
     ]:  # return list of (next_state, reward, probability, done)
         possible_actions = [(action - 1) % 4, (action + 1) % 4, action]
         probs = [0.05, 0.05, 0.9]
+        res = []
+        for action, prob in zip(possible_actions, probs):
+            next_state, reward, is_done, _ = super().step(action, make_move=False)
+            res.append((next_state, reward, prob, is_done, action))
 
-        return []
+        return res
 
     def step(self, action, make_move: bool = True):
         action = self._add_noise(action)
