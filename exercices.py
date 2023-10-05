@@ -384,17 +384,39 @@ def stochastic_grid_world_value_iteration(
 ) -> np.ndarray:
     values = np.zeros((4, 4))
     # BEGIN SOLUTION
-    values = grid_world_value_iteration(
-        env=env, max_iter=max_iter, gamma=gamma, theta=theta
-    )
+    diff = theta
+    i = 0
+    while i < max_iter and diff >= theta:
+        prev_val = np.copy(values)
+        for row in range(env.height):
+            for col in range(env.width):
+                best_val = float("-inf")
+                state = (row, col)
+                env.set_state(*state)
+                for action in range(env.action_space.n):
+                    next_states = env.get_next_states(action=action)
+                    current_sum = 0
+                    for next_state, reward, probability, _, _ in next_states:
+                        # print(next_state, reward, probability, _, _)
+                        current_sum += probability * (
+                            reward + gamma * prev_val[next_state]
+                        )
+                    if current_sum > best_val:
+                        best_val = current_sum
+                        values[state] = best_val
+
+        diff = np.max(np.abs(values - prev_val))
+        i += 1
+
+    return values
     # END SOLUTION
     return values
 
 
-def test_stochastic_grid_world_value_iteration():
+def test_stochastic_grid_world_value_iteration(max_iter=1000):
     env = StochasticGridWorldEnv()
 
-    values = stochastic_grid_world_value_iteration(env, max_iter=1000, gamma=1.0)
+    values = stochastic_grid_world_value_iteration(env, max_iter=max_iter, gamma=1.0)
     solution = np.array(
         [
             [1.0, 1.0, 1.0, 0.0],
@@ -405,7 +427,7 @@ def test_stochastic_grid_world_value_iteration():
     )
     assert np.allclose(values, solution), print("  ", values)
 
-    values = stochastic_grid_world_value_iteration(env, max_iter=1000, gamma=0.9)
+    values = stochastic_grid_world_value_iteration(env, max_iter=max_iter, gamma=0.9)
     solution = np.array(
         [
             [0.77495822, 0.87063224, 0.98343293, 0.0],
