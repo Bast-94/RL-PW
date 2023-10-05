@@ -194,7 +194,10 @@ class GridWorldEnv(gym.Env):
         self.moving_prob[np.where(zero_mask)] = 0
         # self.current_position = (0, 0)
 
-    def step(self, action):
+    def set_state(self, row: int, col: int) -> None:
+        self.current_position = (row, col)
+
+    def step(self, action, make_move: bool = True):
         new_pos = self.current_position
         old_pos = self.current_position
         if action == 0:  # Up
@@ -217,7 +220,7 @@ class GridWorldEnv(gym.Env):
                 self.current_position[0],
                 min(3, self.current_position[1] + 1),
             )
-        if self.grid[tuple(new_pos)] != "W":
+        if self.grid[tuple(new_pos)] != "W" and make_move:
             self.current_position = new_pos
 
         next_state = tuple(self.current_position)
@@ -341,6 +344,16 @@ class StochasticGridWorldEnv(GridWorldEnv):
             return (action + 1) % 4
         # 90% chance to go in the intended direction
         return action
+
+    def get_next_states(
+        self, action: int
+    ) -> list[
+        tuple[int, float, float, bool]
+    ]:  # return list of (next_state, reward, probability, done)
+        possible_actions = [(action - 1) % 4, (action + 1) % 4, action]
+        probs = [0.05, 0.05, 0.9]
+
+        return []
 
     def step(self, action):
         action = self._add_noise(action)
