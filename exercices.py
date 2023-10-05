@@ -209,6 +209,18 @@ class GridWorldEnv(gym.Env):
             self.current_position[1],
         )
 
+    def left_postion(self):
+        return (
+            self.current_position[0],
+            max(0, self.current_position[1] - 1),
+        )
+
+    def right_postion(self):
+        return (
+            self.current_position[0],
+            min(3, self.current_position[1] + 1),
+        )
+
     def step(self, action, make_move: bool = True):
         new_pos = self.current_position
         old_pos = self.current_position
@@ -217,15 +229,9 @@ class GridWorldEnv(gym.Env):
         elif action == 1:  # Down
             new_pos = self.down_position()
         elif action == 2:  # Left
-            new_pos = (
-                self.current_position[0],
-                max(0, self.current_position[1] - 1),
-            )
+            new_pos = self.left_postion()
         elif action == 3:  # Right
-            new_pos = (
-                self.current_position[0],
-                min(3, self.current_position[1] + 1),
-            )
+            new_pos = self.right_postion()
 
         next_state = tuple(new_pos)
 
