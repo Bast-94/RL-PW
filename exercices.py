@@ -192,6 +192,12 @@ class GridWorldEnv(gym.Env):
         zero_mask = (self.grid == "W") | (self.grid == "P") | (self.grid == "N")
 
         self.moving_prob[np.where(zero_mask)] = 0
+        self.direction_table = [
+            self.up_position,
+            self.down_position,
+            self.left_postion,
+            self.right_postion,
+        ]
         # self.current_position = (0, 0)
 
     def set_state(self, row: int, col: int) -> None:
@@ -224,14 +230,7 @@ class GridWorldEnv(gym.Env):
     def step(self, action, make_move: bool = True):
         new_pos = self.current_position
         old_pos = self.current_position
-        if action == 0:  # Up
-            new_pos = self.up_position()
-        elif action == 1:  # Down
-            new_pos = self.down_position()
-        elif action == 2:  # Left
-            new_pos = self.left_postion()
-        elif action == 3:  # Right
-            new_pos = self.right_postion()
+        new_pos = self.direction_table[action]()
 
         next_state = tuple(new_pos)
 
