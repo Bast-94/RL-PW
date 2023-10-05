@@ -220,24 +220,25 @@ class GridWorldEnv(gym.Env):
                 self.current_position[0],
                 min(3, self.current_position[1] + 1),
             )
-        if self.grid[tuple(new_pos)] != "W" and make_move:
-            self.current_position = new_pos
 
-        next_state = tuple(self.current_position)
+        next_state = tuple(new_pos)
 
         # Check if the agent has reached the goal
-        is_done = self.grid[tuple(self.current_position)] in {"P", "N"}
+        is_done = self.grid[tuple(new_pos)] in {"P", "N"}
 
         # Provide reward
         if old_pos != new_pos:
-            if self.grid[tuple(self.current_position)] == "N":
+            if self.grid[tuple(new_pos)] == "N":
                 reward = -1
-            elif self.grid[tuple(self.current_position)] == "P":
+            elif self.grid[tuple(new_pos)] == "P":
                 reward = 1
             else:
                 reward = 0
         else:
             reward = 0
+
+        if self.grid[tuple(new_pos)] != "W" and make_move:
+            self.current_position = new_pos
         return next_state, reward, is_done, {}
 
     def reset(self):
@@ -274,11 +275,11 @@ def grid_world_value_iteration(
             for col in range(env.width):
                 best_val = float("-inf")
                 state = (row, col)
-                env.current_position = state
+                env.set_state(*state)
                 for action in range(env.action_space.n):
-                    next_state, reward, _, _ = env.step(action)
+                    next_state, reward, _, _ = env.step(action, make_move=False)
 
-                    env.current_position = state
+                    # env.current_position = state
                     current_val = (
                         reward + gamma * prev_val[next_state]
                     ) * env.moving_prob[row, col, action]
@@ -355,9 +356,9 @@ class StochasticGridWorldEnv(GridWorldEnv):
 
         return []
 
-    def step(self, action):
+    def step(self, action, make_move: bool = True):
         action = self._add_noise(action)
-        return super().step(action)
+        return super().step(action, make_move)
 
 
 def stochastic_grid_world_value_iteration(
