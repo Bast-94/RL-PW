@@ -1,11 +1,7 @@
 import numpy as np
 
-from exercices import (
-    GridWorldEnv,
-    StochasticGridWorldEnv,
-    test_grid_world_value_iteration,
-    test_stochastic_grid_world_value_iteration,
-)
+from exercices import (StochasticGridWorldEnv,
+                       test_stochastic_grid_world_value_iteration)
 
 env = StochasticGridWorldEnv()
 env.set_state(0, 2)
