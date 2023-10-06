@@ -11,3 +11,4 @@ tiny-testsuite: reformat
 reformat: 
 	$(PYTHON) -m black .
 	$(PYTHON) -m isort .
+	
