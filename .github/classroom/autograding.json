@@ -3,7 +3,7 @@
     {
       "name": "Running tests",
       "setup": "sudo -H pip3 install poetry && poetry install",
-      "run": "sh script.sh",
+      "run": "python3.10 -m pip list && pytest exercices.py",
       "input": "",
       "output": "",
       "comparison": "exact",
