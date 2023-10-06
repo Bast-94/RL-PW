@@ -1,6 +1,6 @@
 for file in $(git ls-files -o);
     do
-        git add $file
+        git add $file || echo 
         git commit -m "ADD($file)."
     done
 for file in $(git ls-files -m);
