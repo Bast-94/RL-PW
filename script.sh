@@ -1,2 +1,1 @@
-ls
-python -V
+python3.10 -m pytest exercices.py
