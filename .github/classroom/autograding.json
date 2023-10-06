@@ -3,7 +3,7 @@
     {
       "name": "Running tests",
       "setup": "sudo -H pip3 install poetry && poetry install",
-      "run": "ls && pwd",
+      "run": "./script.sh",
       "input": "",
       "output": "",
       "comparison": "exact",

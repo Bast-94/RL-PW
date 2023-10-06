@@ -1,0 +1,2 @@
+ls
+python -V
