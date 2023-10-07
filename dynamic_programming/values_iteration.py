@@ -96,6 +96,12 @@ def stochastic_grid_world_value_iteration(
     # BEGIN SOLUTION
     diff = theta
     i = 0
+    env.direction_table = [
+        env.up_position,
+        env.right_postion,
+        env.down_position,
+        env.left_postion,
+    ]
     while i < max_iter and diff >= theta:
         prev_val = np.copy(values)
         for row in range(env.height):
@@ -108,14 +114,18 @@ def stochastic_grid_world_value_iteration(
                     current_sum = 0
                     for next_state, reward, probability, _, _ in next_states:
                         # print(next_state, reward, probability, _, _)
-                        current_sum += probability * (
-                            reward + gamma * prev_val[next_state]
+                        current_sum += (
+                            probability
+                            * env.moving_prob[row, col, action]
+                            * (reward + gamma * prev_val[next_state])
                         )
+
                     if current_sum > best_val:
                         best_val = current_sum
                         values[state] = best_val
-
+        # print(values)
         diff = np.max(np.abs(values - prev_val))
+        # print(diff)
         i += 1
 
     return values
