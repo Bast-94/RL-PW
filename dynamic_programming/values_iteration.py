@@ -1,5 +1,6 @@
 import numpy as np
 
+from dynamic_programming.grid_world_env import GridWorldEnv
 from dynamic_programming.mdp import MDP
 
 # Exercice 2: Résolution du MDP
@@ -43,3 +44,42 @@ def mdp_value_iteration(mdp: MDP, max_iter: int = 1000, gamma=1.0) -> np.ndarray
 
     # END SOLUTION
     return values
+
+
+def grid_world_value_iteration(
+    env: GridWorldEnv,
+    max_iter: int = 1000,
+    gamma=1.0,
+    theta=1e-5,
+) -> np.ndarray:
+    """
+    Estimation de la fonction de valeur grâce à l'algorithme "value iteration".
+    theta est le seuil de convergence (différence maximale entre deux itérations).
+    """
+    values = np.zeros((4, 4))
+    # BEGIN SOLUTION
+    diff = theta
+    i = 0
+    while i < max_iter and diff >= theta:
+        prev_val = np.copy(values)
+        for row in range(env.height):
+            for col in range(env.width):
+                best_val = float("-inf")
+                state = (row, col)
+                env.set_state(*state)
+                for action in range(env.action_space.n):
+                    next_state, reward, _, _ = env.step(action, make_move=False)
+
+                    # env.current_position = state
+                    current_val = (
+                        reward + gamma * prev_val[next_state]
+                    ) * env.moving_prob[row, col, action]
+                    if current_val > best_val:
+                        values[state] = current_val
+                        best_val = current_val
+
+        diff = np.max(np.abs(values - prev_val))
+        i += 1
+
+    return values
+    # END SOLUTION

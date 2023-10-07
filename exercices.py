@@ -12,8 +12,9 @@ import numpy as np
 import pytest
 from gym import spaces
 
-from dynamic_programming import MDP, GridWorldEnv
-from dynamic_programming.values_iteration import mdp_value_iteration
+from dynamic_programming import MDP, GridWorldEnv, StochasticGridWorldEnv
+from dynamic_programming.values_iteration import (grid_world_value_iteration,
+                                                  mdp_value_iteration)
 
 
 # Tests pour l'exercice 1
@@ -42,45 +43,6 @@ def test_mdp_value_iteration(max_iter: int = 1000):
     assert np.allclose(values, [-1.9, -1, 0])
 
 
-def grid_world_value_iteration(
-    env: GridWorldEnv,
-    max_iter: int = 1000,
-    gamma=1.0,
-    theta=1e-5,
-) -> np.ndarray:
-    """
-    Estimation de la fonction de valeur grâce à l'algorithme "value iteration".
-    theta est le seuil de convergence (différence maximale entre deux itérations).
-    """
-    values = np.zeros((4, 4))
-    # BEGIN SOLUTION
-    diff = theta
-    i = 0
-    while i < max_iter and diff >= theta:
-        prev_val = np.copy(values)
-        for row in range(env.height):
-            for col in range(env.width):
-                best_val = float("-inf")
-                state = (row, col)
-                env.set_state(*state)
-                for action in range(env.action_space.n):
-                    next_state, reward, _, _ = env.step(action, make_move=False)
-
-                    # env.current_position = state
-                    current_val = (
-                        reward + gamma * prev_val[next_state]
-                    ) * env.moving_prob[row, col, action]
-                    if current_val > best_val:
-                        values[state] = current_val
-                        best_val = current_val
-
-        diff = np.max(np.abs(values - prev_val))
-        i += 1
-
-    return values
-    # END SOLUTION
-
-
 def test_grid_world_value_iteration(max_iter=1000):
     env = GridWorldEnv()
 
@@ -106,50 +68,6 @@ def test_grid_world_value_iteration(max_iter=1000):
         ]
     )
     assert np.allclose(values, solution)
-
-
-# Exercice 4: GridWorld avec du bruit
-# -----------------------------------
-# Ecrire une fonction qui calcule la fonction de valeur pour le GridWorld
-# avec du bruit.
-# Le bruit est un mouvement aléatoire de l'agent vers sa gauche ou sa droite avec une probabilité de 0.1.
-
-
-class StochasticGridWorldEnv(GridWorldEnv):
-    def __init__(self):
-        super().__init__()
-        self.moving_prob = np.ones(shape=(self.height, self.width, self.action_space.n))
-        zero_mask = (self.grid == "W") | (self.grid == "P") | (self.grid == "N")
-        self.moving_prob[np.where(zero_mask)] = 0
-        # self.moving_prob[np.where(~zero_mask)][:1] = 0.9
-        # self.moving_prob[np.where(~zero_mask)][1:] = 0.05
-
-    def _add_noise(self, action: int) -> int:
-        prob = random.uniform(0, 1)
-        if prob < 0.05:  # 5% chance to go left
-            return (action - 1) % 4
-        elif prob < 0.1:  # 5% chance to go right
-            return (action + 1) % 4
-        # 90% chance to go in the intended direction
-        return action
-
-    def get_next_states(
-        self, action: int
-    ) -> list[
-        tuple[int, float, float, bool]
-    ]:  # return list of (next_state, reward, probability, done)
-        possible_actions = [(action - 1) % 4, (action + 1) % 4, action]
-        probs = [0.05, 0.05, 0.9]
-        res = []
-        for action, prob in zip(possible_actions, probs):
-            next_state, reward, is_done, _ = super().step(action, make_move=False)
-            res.append((next_state, reward, prob, is_done, action))
-
-        return res
-
-    def step(self, action, make_move: bool = True):
-        action = self._add_noise(action)
-        return super().step(action, make_move)
 
 
 def stochastic_grid_world_value_iteration(
