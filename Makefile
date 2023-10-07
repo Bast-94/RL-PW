@@ -12,7 +12,7 @@ reformat:
 	$(PYTHON) -m black .
 	$(PYTHON) -m isort .
 
-fast_commit:
+fast_commit: reformat
 	sh pusher.sh
 
 fast_push: fast_commit
