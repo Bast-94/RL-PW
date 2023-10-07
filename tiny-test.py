@@ -1,4 +1,3 @@
-
 from exercices import (StochasticGridWorldEnv,
                        test_stochastic_grid_world_value_iteration)
 
