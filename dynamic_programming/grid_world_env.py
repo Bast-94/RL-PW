@@ -73,7 +73,7 @@ class GridWorldEnv(gym.Env):
 
     def down_position(self):
         return (
-            min(3, self.current_position[0] + 1),
+            min(self.height - 1, self.current_position[0] + 1),
             self.current_position[1],
         )
 
@@ -86,7 +86,7 @@ class GridWorldEnv(gym.Env):
     def right_postion(self):
         return (
             self.current_position[0],
-            min(3, self.current_position[1] + 1),
+            min(self.width - 1, self.current_position[1] + 1),
         )
 
     def step(self, action, make_move: bool = True):
