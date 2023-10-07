@@ -4,4 +4,4 @@ for file in $(git status --porcelain  | awk 'match($1, ""){print $2}' );
         git add $file 2> /dev/null
         git commit -m "UPDATE($file)."
     done
-git push
+# git push
