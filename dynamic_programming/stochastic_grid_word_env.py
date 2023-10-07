@@ -75,13 +75,13 @@ class StochasticGridWorldEnv(GridWorldEnv):
         Takes a step in the environment based on the given action and returns the resulting state, reward, and done flag.
 
         Args:
-        - action: The action to take in the environment.
-        - make_move: Whether or not to actually move the agent in the environment. If False, the state and reward will be calculated but the agent will not actually move.
+            action: The action to take in the environment.
+            make_move: Whether or not to actually move the agent in the environment. If False, the state and reward will be calculated but the agent will not actually move.
 
         Returns:
-        - state: The resulting state after taking the given action.
-        - reward: The reward received for taking the given action.
-        - done: Whether or not the episode is done after taking the given action.
+            state: The resulting state after taking the given action.
+            reward: The reward received for taking the given action.
+            done: Whether or not the episode is done after taking the given action.
         """
         action = self._add_noise(action)
         return super().step(action, make_move)
