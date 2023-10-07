@@ -13,8 +13,9 @@ import pytest
 from gym import spaces
 
 from dynamic_programming import MDP, GridWorldEnv, StochasticGridWorldEnv
-from dynamic_programming.values_iteration import (grid_world_value_iteration,
-                                                  mdp_value_iteration)
+from dynamic_programming.values_iteration import (
+    grid_world_value_iteration, mdp_value_iteration,
+    stochastic_grid_world_value_iteration)
 
 
 # Tests pour l'exercice 1
@@ -68,43 +69,6 @@ def test_grid_world_value_iteration(max_iter=1000):
         ]
     )
     assert np.allclose(values, solution)
-
-
-def stochastic_grid_world_value_iteration(
-    env: StochasticGridWorldEnv,
-    max_iter: int = 1000,
-    gamma: float = 1.0,
-    theta: float = 1e-5,
-) -> np.ndarray:
-    values = np.zeros((4, 4))
-    # BEGIN SOLUTION
-    diff = theta
-    i = 0
-    while i < max_iter and diff >= theta:
-        prev_val = np.copy(values)
-        for row in range(env.height):
-            for col in range(env.width):
-                best_val = float("-inf")
-                state = (row, col)
-                env.set_state(*state)
-                for action in range(env.action_space.n):
-                    next_states = env.get_next_states(action=action)
-                    current_sum = 0
-                    for next_state, reward, probability, _, _ in next_states:
-                        # print(next_state, reward, probability, _, _)
-                        current_sum += probability * (
-                            reward + gamma * prev_val[next_state]
-                        )
-                    if current_sum > best_val:
-                        best_val = current_sum
-                        values[state] = best_val
-
-        diff = np.max(np.abs(values - prev_val))
-        i += 1
-
-    return values
-    # END SOLUTION
-    return values
 
 
 def test_stochastic_grid_world_value_iteration(max_iter=1000):
