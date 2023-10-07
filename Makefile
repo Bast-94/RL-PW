@@ -11,4 +11,10 @@ tiny-testsuite: reformat
 reformat: 
 	$(PYTHON) -m black .
 	$(PYTHON) -m isort .
+
+fast_commit:
+	sh pusher.sh
+
+fast_push: fast_commit
+	git push
 	
