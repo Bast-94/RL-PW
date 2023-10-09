@@ -160,12 +160,12 @@ def domino_paving(n: int) -> int:
     """
     a = 0
     # BEGIN SOLUTION
-    if(n%2==1):
+    if n % 2 == 1:
         return 0
-    if(n<=0):
+    if n <= 0:
         return 1
-    
-    return 4*domino_paving(n-2) - domino_paving(n-4)
+
+    return 4 * domino_paving(n - 2) - domino_paving(n - 4)
     # END SOLUTION
 
 
