@@ -29,7 +29,9 @@ def value_iteration_per_state(env, values, gamma, prev_val, delta):
                 * env.moving_prob[row, col, action]
                 * (reward + gamma * prev_val[next_row, next_col])
             )
+        print(f"For action {action} current sum is {current_sum}")
         values[row, col] = max(values[row, col], current_sum)
+    print(values[row, col], prev_val[row, col])
     delta = max(delta, np.abs(values[row, col] - prev_val[row, col]))
     return delta
 
@@ -48,3 +50,8 @@ if debug:
         i += 1
 
 print((values))
+print(i)
+env.set_state(1, 2)
+value_iteration_per_state(env, values, gamma, np.copy(values), delta)
+print((values))
+print(env.get_next_states(0))
