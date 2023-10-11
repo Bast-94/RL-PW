@@ -39,7 +39,6 @@ def value_iteration_per_state(env, values, gamma, prev_val, delta):
 
 import os
 
-# value_iteration_per_state(env,  values, gamma, np.copy(values),delta)
 debug = False
 max_iter = 1000
 gamma = 1
@@ -66,21 +65,7 @@ values = np.array(
         [1.0, 1.0, 1.0, 1.0],
     ]
 )
-# env.set_state(1, 2)
-# print((values))
-# env.direction_table = [
-#    env.up_position,
-#    env.down_position,
-#    env.left_postion,
-#    env.right_postion,
-# ]
-# value_iteration_per_state(env, values, gamma, np.copy(values), delta)
-# print((values))
-# for i in range(env.action_space.n):
-#    print(f"making move {i}")
-#    print(env.get_next_states(i))
-# env.render()
-# print(env.step(2))
+
 env = GridWorldEnv()
 for i in range(2):
     env.step(0)

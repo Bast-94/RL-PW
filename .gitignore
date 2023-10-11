@@ -162,3 +162,4 @@ res.txt
 poetry.lock
 test/
 values.npy
+tiny-test.py
