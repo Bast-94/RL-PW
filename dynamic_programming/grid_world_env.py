@@ -90,12 +90,14 @@ class GridWorldEnv(gym.Env):
         )
 
     def step(self, action, make_move: bool = True):
-        new_pos = self.current_position
+        # new_pos = self.current_position
         old_pos = self.current_position
         new_pos = self.direction_table[action]()
 
         next_state = tuple(new_pos)
-
+        # Check if the agent has hit a wall
+        if self.grid[tuple(new_pos)] == "W":
+            next_state = tuple(old_pos)
         # Check if the agent has reached the goal
         is_done = self.grid[tuple(new_pos)] in {"P", "N"}
 
@@ -110,8 +112,9 @@ class GridWorldEnv(gym.Env):
         else:
             reward = 0
 
-        if self.grid[tuple(new_pos)] != "W" and make_move:
-            self.current_position = new_pos
+        if make_move:  # self.grid[tuple(new_pos)] != "W" and make_move:
+            self.current_position = next_state
+
         return next_state, reward, is_done, {}
 
     def reset(self):

@@ -45,10 +45,16 @@ def fibonacci_memo(n: int) -> int:
     """
 
     # BEGIN SOLUTION
-    def fibo_rec(n: int, a1: int, a2: int):
-        if n == 0:
-            return a1
-        return fibo_rec(n - 1, a2, a1 + a2)
+    fibo_values = (n + 1) * [-1]
 
-    return fibo_rec(n, 0, 1)
+    def fibo_rec(fibo_values, n):
+        if fibo_values[n] != -1:
+            return fibo_values[n]
+        if n in [0, 1]:
+            fibo_values[n] = n
+        else:
+            fibo_values[n] = fibo_rec(fibo_values, n - 1) + fibo_rec(fibo_values, n - 2)
+        return fibo_values[n]
+
+    return fibo_rec(fibo_values, n)
     # END SOLUTION

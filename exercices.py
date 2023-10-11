@@ -13,6 +13,7 @@ import pytest
 from gym import spaces
 
 from dynamic_programming import MDP, GridWorldEnv, StochasticGridWorldEnv
+from dynamic_programming.domino_paving import domino_paving
 from dynamic_programming.fibonacci import fibonacci, fibonacci_memo
 from dynamic_programming.values_iteration import (
     grid_world_value_iteration, mdp_value_iteration,
@@ -98,14 +99,6 @@ def test_stochastic_grid_world_value_iteration(max_iter=1000):
     assert np.allclose(values, solution), print("  ", values)
 
 
-# Exercice 3: Evaluation de politique
-# -----------------------------------
-# Ecrire une fonction qui évalue la politique suivante:
-#   - état 0, action 0
-#   - état 1, action 0
-#   - état 2, action 1
-
-
 # Tests pour l'exercice 1
 @pytest.mark.parametrize(
     "n,expected",
@@ -140,35 +133,6 @@ def test_fibonacci_memo(n, expected):
     assert fibonacci_memo(n) == expected
 
 
-# Exercice 3 : pavage d'un rectangle avec des dominos
-# ---------------------------------------------------
-# On considère un rectangle de dimensions 3xN, et des dominos de
-# dimensions 2x1. On souhaite calculer le nombre de façons de paver le
-# rectangle avec des dominos.
-
-# Ecrire une fonction qui calcule le nombre de façons de paver le
-# rectangle de dimensions 3xN avec des dominos.
-# Indice: trouver une relation de récurrence entre le nombre de façons
-# de paver un rectangle de dimensions 3xN et le nombre de façons de
-# paver un rectangle de dimensions 3x(N-1), 3x(N-2) et 3x(N-3).
-
-
-def domino_paving(n: int) -> int:
-    """
-    Calcule le nombre de façons de paver un rectangle de dimensions 3xN
-    avec des dominos.
-    """
-    a = 0
-    # BEGIN SOLUTION
-    if n % 2 == 1:
-        return 0
-    if n <= 0:
-        return 1
-
-    return 4 * domino_paving(n - 2) - domino_paving(n - 4)
-    # END SOLUTION
-
-
 # Tests pour l'exercice 3
 @pytest.mark.parametrize(
     "n,expected",
@@ -195,4 +159,6 @@ def test_wall():
         env.step(0)
     old_position = env.current_position
     env.step(3)
-    assert old_position == env.current_position
+    assert old_position == env.current_position, print(
+        env.current_position, old_position
+    )

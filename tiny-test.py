@@ -1,5 +1,6 @@
 import numpy as np
 
+from dynamic_programming.grid_world_env import GridWorldEnv
 from exercices import (StochasticGridWorldEnv,
                        test_stochastic_grid_world_value_iteration)
 
@@ -36,8 +37,10 @@ def value_iteration_per_state(env, values, gamma, prev_val, delta):
     return delta
 
 
+import os
+
 # value_iteration_per_state(env,  values, gamma, np.copy(values),delta)
-debug = True
+debug = False
 max_iter = 1000
 gamma = 1
 if debug:
@@ -49,10 +52,39 @@ if debug:
                 delta = value_iteration_per_state(env, values, gamma, prev_val, delta)
         i += 1
 
-print((values))
+if os.path.exists("values.npy"):
+    values = np.load("values.npy")
+else:
+    np.save("values.npy", values)
+
 print(i)
-env.set_state(1, 2)
-value_iteration_per_state(env, values, gamma, np.copy(values), delta)
-print((values))
-print(env.get_next_states(0))
-print(env.moving_prob)
+values = np.array(
+    [
+        [1.0, 1.0, 1.0, 0.0],
+        [1.0, 0.0, 1.0, 0.0],
+        [1.0, 1.0, 1.0, 1.0],
+        [1.0, 1.0, 1.0, 1.0],
+    ]
+)
+# env.set_state(1, 2)
+# print((values))
+# env.direction_table = [
+#    env.up_position,
+#    env.down_position,
+#    env.left_postion,
+#    env.right_postion,
+# ]
+# value_iteration_per_state(env, values, gamma, np.copy(values), delta)
+# print((values))
+# for i in range(env.action_space.n):
+#    print(f"making move {i}")
+#    print(env.get_next_states(i))
+# env.render()
+# print(env.step(2))
+env = GridWorldEnv()
+for i in range(2):
+    env.step(0)
+env.render()
+old_position = env.current_position
+env.step(3)
+env.render()

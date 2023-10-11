@@ -161,3 +161,4 @@ cython_debug/
 res.txt
 poetry.lock
 test/
+values.npy
