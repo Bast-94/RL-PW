@@ -79,7 +79,7 @@ def grid_world_value_iteration(
                         values[state] = current_val
                         best_val = current_val
 
-        diff = np.max(np.abs(values - prev_val))
+                diff = max(diff,np.abs(values[row,col] - prev_val[row,col]))
         i += 1
 
     return values
