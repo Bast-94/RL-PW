@@ -2,7 +2,7 @@
   "tests": [
     {
       "name": "Running tests",
-      "setup": "pwd 1>&2",
+      "setup": "cd PW2 && pwd 1>&2",
       "run": "echo 'Hello, world!'",
       "input": "",
       "output": "",
