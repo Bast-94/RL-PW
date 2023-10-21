@@ -2,10 +2,10 @@
   "tests": [
     {
       "name": "Running tests",
-      "setup": "cd PW2 ",
-      "run": "pwd",
+      "setup": "pwd>pwd.txt && sudo -H pip3 install poetry && poetry install -C PW2",
+      "run": "poetry run pytest PW2/exercices.py",
       "input": "",
-      "output": "echo FINISHED",
+      "output": "",
       "comparison": "exact",
       "timeout": 10,
       "points": null
