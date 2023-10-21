@@ -1,0 +1,2 @@
+testsuite:
+	poetry run pytest

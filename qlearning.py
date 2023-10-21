@@ -49,6 +49,7 @@ class QLearningAgent:
         """
         value = 0.0
         # BEGIN SOLUTION
+        value = self.get_best_action(state)
         # END SOLUTION
         return value
 
