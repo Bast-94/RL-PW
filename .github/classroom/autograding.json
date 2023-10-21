@@ -2,7 +2,7 @@
   "tests": [
     {
       "name": "Running tests",
-      "setup": "sudo -H pip3 install poetry && poetry install -C PW2",
+      "setup": "pwd>pwd.txt && sudo -H pip3 install poetry && poetry install -C PW2",
       "run": "poetry run pytest PW2/exercices.py",
       "input": "",
       "output": "",
