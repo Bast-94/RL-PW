@@ -3,7 +3,7 @@
     {
       "name": "Running tests",
       "setup": "cd PW2 && pwd 1>&2 && pip3 install poetry 1>&2 && poetry install ",
-      "run": "echo 'Hello, world!' && pwd",
+      "run": "cd PW2 && pwd && poetry run pytest",
       "input": "",
       "output": "",
       "comparison": "exact",
