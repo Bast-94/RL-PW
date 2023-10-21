@@ -64,6 +64,7 @@ class QLearningAgent:
         """
         q_value = 0.0
         # BEGIN SOLUTION
+
         # END SOLUTION
 
         self.set_qvalue(state, action, q_value)

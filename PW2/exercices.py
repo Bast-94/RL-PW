@@ -16,8 +16,10 @@ from dynamic_programming import MDP, GridWorldEnv, StochasticGridWorldEnv
 from dynamic_programming.domino_paving import domino_paving
 from dynamic_programming.fibonacci import fibonacci, fibonacci_memo
 from dynamic_programming.values_iteration import (
-    grid_world_value_iteration, mdp_value_iteration,
-    stochastic_grid_world_value_iteration)
+    grid_world_value_iteration,
+    mdp_value_iteration,
+    stochastic_grid_world_value_iteration,
+)
 
 
 # Tests pour l'exercice 1
