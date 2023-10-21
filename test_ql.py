@@ -22,7 +22,6 @@ def agent(env):
     )
 
 def test_a(env,agent):
-    n_actions = env.action_space.n  # type: ignore
     
     for state in range(env.observation_space.n):
         for action in range(env.action_space.n):
