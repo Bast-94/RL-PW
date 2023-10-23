@@ -63,6 +63,7 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
         agent.update(state=s, action=a, next_state=next_s, reward=r)
         s = next_s
         if done:
+            #print(i)
             break
         # END SOLUTION
 
@@ -73,7 +74,7 @@ def q_learning(epochs=1000, verbose=True, img_output_file=None):
     env = gym.make("Taxi-v3", render_mode="rgb_array")
     n_actions = env.action_space.n
     agent = QLearningAgent(
-        learning_rate=0.5,
+        learning_rate=0.6,
         epsilon=0.25,
         gamma=0.99,
         legal_actions=list(range(n_actions)),
