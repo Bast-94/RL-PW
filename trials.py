@@ -6,6 +6,7 @@ import numpy as np
 from tqdm import tqdm
 
 from qlearning import QLearningAgent
+from sarsa import SarsaAgent
 from taxi import play_and_train
 
 parser = argparse.ArgumentParser()
@@ -50,4 +51,15 @@ def q_learning(epochs=1000, verbose=True, img_output_file=None):
     print("mean reward", np.mean(rewards[-step:]))
 
 
-q_learning(epochs=epochs, verbose=verbose, img_output_file=img_output_file)
+# q_learning(epochs=epochs, verbose=verbose, img_output_file=img_output_file)
+env = gym.make("Taxi-v3", render_mode="rgb_array")
+n_actions = env.action_space.n
+agent = SarsaAgent(learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions)))
+
+rewards = []
+
+
+for i in tqdm(range(1000)):
+    rewards.append(play_and_train(env, agent))
+    if i % 100 == 0:
+        print("mean reward", np.mean(rewards[-100:]))
