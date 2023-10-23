@@ -10,6 +10,7 @@ pusher() {
                 read msg
             fi
             echo $msg > empty.txt
+            
             git commit -m "UPDATE($file): $msg"
         done
 }
