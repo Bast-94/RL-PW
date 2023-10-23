@@ -31,3 +31,8 @@ jobs:
     - name: Test with pytest
       run: |
         make testsuite
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v3
+      with:
+        name: videos
+        path: output/test/code-coverage.html
