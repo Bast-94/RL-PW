@@ -47,6 +47,7 @@ class SarsaAgent:
         """
         value = 0.0
         # BEGIN SOLUTION
+        value = self.get_best_action(state)
         # END SOLUTION
         return value
 
@@ -61,6 +62,7 @@ class SarsaAgent:
         """
         q_value = 0.0
         # BEGIN SOLUTION
+
         # END SOLUTION
 
         self.set_qvalue(state, action, q_value)
