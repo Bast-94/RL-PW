@@ -24,7 +24,7 @@ class QLearningAgentEpsScheduling(QLearningAgent):
         self.epsilon_start = epsilon_start
         self.epsilon_end = epsilon_end
         self.epsilon_decay_steps = epsilon_decay_steps
-        self.timestep = 0
+        self.reset()
 
     def reset(self):
         """
@@ -55,3 +55,11 @@ class QLearningAgentEpsScheduling(QLearningAgent):
         self, state: State, action: Action, reward: t.SupportsFloat, next_state: State
     ):
         super().update(state, action, reward, next_state)
+        self.timestep += 1
+        # update epsilon using self.timestep and self.epsilon_decay_steps
+
+        # BEGIN SOLUTION
+        self.epsilon = max(
+            self.epsilon_end,
+            self.epsilon_start - self.timestep / self.epsilon_decay_steps,
+        )
