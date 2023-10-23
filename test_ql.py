@@ -1,15 +1,19 @@
-from qlearning import QLearningAgent
-import pytest
-from collections import defaultdict
+import os
 import random
 import typing as t
-import numpy as np
+from collections import defaultdict
+
 import gymnasium as gym
-import os
+import numpy as np
+import pytest
+
+from qlearning import QLearningAgent
+
 
 @pytest.fixture
 def env():
     return gym.make("Taxi-v3", render_mode="rgb_array")
+
 
 @pytest.fixture
 def agent(env):
@@ -21,13 +25,10 @@ def agent(env):
         legal_actions=list(range(n_actions)),
     )
 
-def test_a(env,agent):
-    
+
+def test_a(env, agent):
     for state in range(env.observation_space.n):
         for action in range(env.action_space.n):
             best = agent.get_best_action(state)
             assert isinstance(best, int)
             assert best in range(env.action_space.n)
-    
-    
-            

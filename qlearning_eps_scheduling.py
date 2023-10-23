@@ -1,6 +1,8 @@
 import random
+
 import numpy as np
-from qlearning import QLearningAgent, State, Action
+
+from qlearning import Action, QLearningAgent, State
 
 
 class QLearningAgentEpsScheduling(QLearningAgent):

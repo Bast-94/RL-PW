@@ -1,9 +1,9 @@
-from collections import defaultdict
 import random
 import typing as t
-import numpy as np
-import gymnasium as gym
+from collections import defaultdict
 
+import gymnasium as gym
+import numpy as np
 
 Action = int
 State = int
@@ -82,10 +82,10 @@ class QLearningAgent:
         index = np.argmax(possible_q_values)
         best_action = self.legal_actions[index]
         return best_action
-    
+
     def epsilon_choice(self):
         return random.random() < self.epsilon
-    
+
     def get_action(self, state: State) -> Action:
         """
         Compute the action to take in the current state, including exploration.
@@ -99,8 +99,8 @@ class QLearningAgent:
         action = self.legal_actions[0]
 
         # BEGIN SOLUTION
-        if(self.epsilon_choice()):
-            action = random.choice(action)
+        if self.epsilon_choice():
+            action = random.choice(self.legal_actions)
         else:
             action = self.get_best_action(state)
         # END SOLUTION

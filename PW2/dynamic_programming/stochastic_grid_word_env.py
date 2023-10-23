@@ -1,7 +1,6 @@
 import random
 
 import numpy as np
-
 from dynamic_programming.grid_world_env import GridWorldEnv
 
 # Exercice 4: GridWorld avec du bruit

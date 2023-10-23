@@ -1,9 +1,9 @@
-from collections import defaultdict
 import random
 import typing as t
-import numpy as np
-import gymnasium as gym
+from collections import defaultdict
 
+import gymnasium as gym
+import numpy as np
 
 Action = int
 State = int
