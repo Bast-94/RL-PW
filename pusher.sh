@@ -9,7 +9,7 @@ pusher() {
             if [ -z "$1" ]; then
                 read msg
             fi
-            
+            echo $msg > empty.txt
             git commit -m "UPDATE($file): $msg"
         done
 }
