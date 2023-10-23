@@ -1,16 +1,15 @@
-import argparse
-import glob
+
 
 import cv2
 import gymnasium as gym
-import matplotlib.pyplot as plt
 import numpy as np
-from tqdm import tqdm
-
-from qlearning import QLearningAgent
-from sarsa import SarsaAgent
-from taxi import play_and_train
 env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n
-print(env.render())
-fig, ax = plt.subplots()
+env.reset()
+fourcc = cv2.VideoWriter_fourcc(*"XVID")
+height, width = 600, 400
+video = cv2.VideoWriter("ouptut/video.avi", fourcc, 20.0, (height, width))
+for i in range(1000):
+    random_img = np.random.randint(255, size=(height, width, 3), dtype=np.uint8)
+    video.write(random_img)
+video.release()
