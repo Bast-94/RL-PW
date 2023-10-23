@@ -32,12 +32,14 @@ from sarsa import SarsaAgent
 
 env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n  # type: ignore
-logging.basicConfig(level=logging.INFO)
-output_file_log = open("output.log", "w")
+
 
 #################################################
 # 1. Play with QLearningAgent
 #################################################
+agent = QLearningAgent(
+    learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
+)
 
 
 def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float:
@@ -63,51 +65,27 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
         agent.update(state=s, action=a, next_state=next_s, reward=r)
         s = next_s
         if done:
-            #print(i)
+            # print(i)
             break
         # END SOLUTION
 
     return total_reward
 
 
-def q_learning(epochs=1000, verbose=True, img_output_file=None):
-    env = gym.make("Taxi-v3", render_mode="rgb_array")
-    n_actions = env.action_space.n
-    agent = QLearningAgent(
-        learning_rate=0.6,
-        epsilon=0.25,
-        gamma=0.99,
-        legal_actions=list(range(n_actions)),
-    )
+rewards = []
+for i in range(1000):
+    rewards.append(play_and_train(env, agent))
+    if i % 100 == 0:
+        print("mean reward", np.mean(rewards[-100:]))
 
-    rewards = []
-    for i in tqdm(range(epochs)):
-        rewards.append(play_and_train(env, agent))
-        if i % 100 == 0 and verbose:
-            print("mean reward", np.mean(rewards[-100:]))
-    if img_output_file is not None:
-        fig, ax = plt.subplots()
-        smooth_curve = np.convolve(rewards, np.ones((100,)) / 100, mode="valid")
-        ax.plot(rewards, color="blue")
-        ax.plot(smooth_curve, color="red")
-        ax.set_xlabel("Epochs")
-        ax.set_ylabel("Rewards")
-        ax.set_title("Rewards per epoch")
-        fig.savefig(img_output_file)
-    assert np.mean(rewards[-100:]) > 0.0
-
-
-if __name__ == "__main__":
-    q_learning()
-    # TODO: créer des vidéos de l'agent en action
-
+assert np.mean(rewards[-100:]) > 0.0
 #################################################
 # 2. Play with QLearningAgentEpsScheduling
 #################################################
 
 
 agent = QLearningAgentEpsScheduling(
-    learning_rate=0.5, epsilon=0.25, gamma=0.99, legal_actions=list(range(n_actions))
+    learning_rate=0.5, epsilon=0.1, gamma=0.9, legal_actions=list(range(n_actions))
 )
 if __name__ == "__main__":
     rewards = []
