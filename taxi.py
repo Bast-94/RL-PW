@@ -42,7 +42,9 @@ agent = QLearningAgent(
 )
 
 
-def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float:
+def play_and_train(
+    env: gym.Env, agent: QLearningAgent, t_max=int(1e4), recording: bool = False
+) -> float:
     """
     This function should
     - run a full game, actions given by agent.getAction(s)
@@ -65,7 +67,6 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
         agent.update(state=s, action=a, next_state=next_s, reward=r)
         s = next_s
         if done:
-            # print(i)
             break
         # END SOLUTION
 
@@ -73,12 +74,13 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
 
 
 rewards = []
-for i in range(1000):
-    rewards.append(play_and_train(env, agent))
-    if i % 100 == 0:
-        print("mean reward", np.mean(rewards[-100:]))
+if __name__ == "__main__":
+    for i in range(1000):
+        rewards.append(play_and_train(env, agent))
+        if i % 100 == 0:
+            print("mean reward", np.mean(rewards[-100:]))
 
-assert np.mean(rewards[-100:]) > 0.0
+    assert np.mean(rewards[-100:]) > 0.0
 #################################################
 # 2. Play with QLearningAgentEpsScheduling
 #################################################
