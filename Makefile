@@ -8,3 +8,5 @@ testsuite:
 
 tiny-testsuite:
 	poetry run python trials.py
+taxi:
+	poetry run python taxi.py
