@@ -29,8 +29,8 @@ sarsa_agent = SarsaAgent(learning_rate=0.5, gamma=0.99, legal_actions=list(range
 
 agents = [q_learning_agent, eps_scheduling_agent, sarsa_agent]
 agent_names = ["q_learning", "eps_scheduling", "sarsa"]
-
-outs = [ cv2.VideoWriter(f'{name}.avi',cv2.VideoWriter_fourcc(*'DIVX'), 60, frameSize) for name in agent_names]
+fps = 24
+outs = [ cv2.VideoWriter(f'{name}.avi',cv2.VideoWriter_fourcc(*'DIVX'), fps, frameSize) for name in agent_names]
 for agent,name,out in zip(agents,agent_names,outs):
     print("Training agent: ", name)
     train(agent, env, t_max, num_episodes=1000, recording=False)
