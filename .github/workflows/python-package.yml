@@ -41,4 +41,4 @@ jobs:
         path: |
           sarsa.avi
           q_learning.avi
-          q_learning_eps_scheduling.avi
+          eps_scheduling.avi
