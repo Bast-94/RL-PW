@@ -29,22 +29,27 @@ sarsa_agent = SarsaAgent(learning_rate=0.5, gamma=0.99, legal_actions=list(range
 
 agents = [q_learning_agent, eps_scheduling_agent, sarsa_agent]
 agent_names = ["q_learning", "eps_scheduling", "sarsa"]
-fps = 24
+fps = 16
 outs = [ cv2.VideoWriter(f'{name}.avi',cv2.VideoWriter_fourcc(*'DIVX'), fps, frameSize) for name in agent_names]
 for agent,name,out in zip(agents,agent_names,outs):
     print("Training agent: ", name)
-    train(agent, env, t_max, num_episodes=1000, recording=False)
-    print("Done")
-    print("Playing and recording agent: ", name)
-    s, _ = env.reset()            
-    for i in tqdm(range(0,t_max)):
-        action = agent.get_action(s)
-        next_s, r, done, _, _ = env.step(action)
-        s = next_s
-        
-        img = env.render()
-        out.write(img)
-        if done:
-            break
+    ep_per_step = 100
+    for train_step in tqdm(range(1,11)):
+        train(agent, env, t_max, num_episodes=ep_per_step, recording=False)
+        print("Done")
+        print("Playing and recording agent: ", name)
+        s, _ = env.reset()
+                    
+        for i in tqdm(range(0,t_max)):
+            action = agent.get_action(s)
+            next_s, r, done, _, _ = env.step(action)
+            s = next_s
+              
+            img = env.render()
+            if(i==0):
+                img = cv2.putText(img, f"Agent: {name} after {train_step*ep_per_step} episodes", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+            out.write(img)
+            if done:
+                break
 
-    out.release()
+        out.release()
