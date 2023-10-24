@@ -10,3 +10,5 @@ tiny-testsuite:
 	poetry run python trials.py
 taxi:
 	poetry run python taxi.py
+video:
+	poetry run python video_maker.py
