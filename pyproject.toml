@@ -15,9 +15,10 @@ gymnasium = {extras = ["classic-control", "toy-text"], version = "^0.29.1", allo
 pytest = {version = "^6.2.5", allow-prereleases = true}
 tqdm = {version = "^4.62.3", allow-prereleases = true}
 
-opencv-contrib-python-headless = "^4.8.1.78"
+
 isort = "^5.12.0"
 opencv-python-headless = "^4.8.1.78"
+opencv-contrib-python-headless = "^4.8.1.78"
 
 
 [tool.poetry.group.dev.dependencies]
