@@ -18,48 +18,12 @@ verbose = parser.parse_args().verbose
 epochs = parser.parse_args().epochs
 
 
-def q_learning(epochs=1000, verbose=True, img_output_file=None):
-    env = gym.make("Taxi-v3", render_mode="rgb_array")
-    n_actions = env.action_space.n
-    agent = QLearningAgent(
-        learning_rate=1,
-        epsilon=0,
-        gamma=1,
-        legal_actions=list(range(n_actions)),
-    )
-    step = 100
-    rewards = []
-    mean_rewards = []
-    for i in tqdm(range(epochs)):
-        rewards.append(play_and_train(env, agent))
-        if i % step == 0:
-            if verbose:
-                print("mean reward", np.mean(rewards[-step:]))
-            mean_rewards.append(np.mean(rewards[-step:]))
-
-    if img_output_file is not None:
-        fig, ax = plt.subplots()
-        smooth_curve = np.convolve(rewards, np.ones((step,)) / step, mode="valid")
-        ax.plot(rewards, color="blue")
-        ax.plot(smooth_curve, color="red")
-        ax.set_xlabel("Epochs")
-        ax.set_ylabel("Rewards")
-        # ax.set_yscale("log")
-        ax.set_title("Rewards per epoch")
-        fig.savefig(img_output_file)
-    assert np.mean(rewards[-step:]) > 0.0, print(np.mean(rewards[-step:]))
-    print("mean reward", np.mean(rewards[-step:]))
-
-
-# q_learning(epochs=epochs, verbose=verbose, img_output_file=img_output_file)
 env = gym.make("Taxi-v3", render_mode="rgb_array")
-n_actions = env.action_space.n
-agent = SarsaAgent(learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions)))
-
-rewards = []
-
-
-for i in tqdm(range(1000)):
-    rewards.append(play_and_train(env, agent))
-    if i % 100 == 0:
-        print("mean reward", np.mean(rewards[-100:]))
+n_actions = env.action_space.n  # type: ignore
+s, _ = env.reset()
+env.step(0)
+plt.imshow(env.render())
+plt.savefig("taxi.png")
+env.step(1)
+plt.imshow(env.render())
+plt.savefig("taxi1.png")
