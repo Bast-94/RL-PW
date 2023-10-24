@@ -33,6 +33,7 @@ jobs:
         make testsuite
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
+      run: make video
       with:
         name: videos
-        path: output/test/code-coverage.html
+        path: output/output_video.avi
