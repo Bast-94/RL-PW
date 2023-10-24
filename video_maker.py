@@ -53,4 +53,4 @@ for agent,name,out in zip(agents,agent_names,outs):
             if done:
                 break
 
-        out.release()
+    out.release()
