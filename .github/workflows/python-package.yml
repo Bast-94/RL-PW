@@ -35,7 +35,10 @@ jobs:
       run: |
         make video
     - name: download production artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
-        name: dist-without-markdown
-        path: sarsa.avi
+        name: produced-videos
+        path: |
+          sarsa.avi
+          q_learning.avi
+          q_learning_eps_scheduling.avi
