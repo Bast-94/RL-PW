@@ -34,13 +34,14 @@ outs = [ cv2.VideoWriter(f'{name}.avi',cv2.VideoWriter_fourcc(*'DIVX'), fps, fra
 for agent,name,out in zip(agents,agent_names,outs):
     print("Training agent: ", name)
     ep_per_step = 100
+    
     for train_step in tqdm(range(1,11)):
-        s, _ = env.reset()
-        train(agent, env, t_max, num_episodes=ep_per_step, recording=False)
+        
+        train(agent, env, t_max, num_episodes=ep_per_step)
         print("Done")
         print("Playing and recording agent: ", name)
         
-                    
+        s, _ = env.reset()         
         for i in tqdm(range(0,t_max)):
             action = agent.get_action(s)
             next_s, r, done, _, _ = env.step(action)
