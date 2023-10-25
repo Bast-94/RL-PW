@@ -4,7 +4,7 @@ from tqdm import tqdm
 import gymnasium as gym
 
 def train(agent:QLearningAgent, env:gym.Env, t_max:int = int(1e4), num_episodes:int = int(1e4), recording:bool = False):
-    for _ in tqdm(range(num_episodes)):
+    for _ in tqdm(range(num_episodes),desc="Training"):
         play_and_train(env, agent, t_max)
     return agent
 
