@@ -27,16 +27,16 @@ eps_scheduling_agent = QLearningAgentEpsScheduling(
 )
 sarsa_agent = SarsaAgent(learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions))) 
 
-agents = [q_learning_agent, eps_scheduling_agent, sarsa_agent]
+agents = [q_learning_agent]#, eps_scheduling_agent, sarsa_agent]
 agent_names = ["q_learning", "eps_scheduling", "sarsa"]
 fps = 16
-
+nb_step = 1
 for agent,name in zip(agents,agent_names):
     print("Training agent: ", name)
     ep_per_step = 100
     out = cv2.VideoWriter(f'{name}.avi',cv2.VideoWriter_fourcc(*'DIVX'), fps, frameSize)
-    for train_step in tqdm(range(1,11)):
-        
+    for train_step in tqdm(range(1,nb_step+1)):
+        print(train_step)
         train(agent, env, t_max, num_episodes=ep_per_step)
         print("Done")
         print("Playing and recording agent: ", name)
