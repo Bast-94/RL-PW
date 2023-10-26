@@ -33,7 +33,7 @@ fps = 16
 nb_step = 1
 for agent,name in zip(agents,agent_names):
     print("Training agent: ", name)
-    ep_per_step = 100
+    ep_per_step = 1000
     out = cv2.VideoWriter(f'{name}.avi',cv2.VideoWriter_fourcc(*'DIVX'), fps, frameSize)
     for train_step in tqdm(range(1,nb_step+1)):
         print(train_step)
