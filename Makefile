@@ -8,8 +8,10 @@ testsuite:
 
 tiny-testsuite:
 	poetry run python trials.py
+	
 taxi:
 	poetry run python taxi.py
+
 video:
 	# check artifacts directory exists
 	mkdir -p artifacts
