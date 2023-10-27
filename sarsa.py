@@ -27,6 +27,7 @@ class SarsaAgent:
         self._qvalues: QValues = defaultdict(lambda: defaultdict(int))
         self.learning_rate = learning_rate
         self.gamma = gamma
+        self.prev_action = None
 
     def get_qvalue(self, state: State, action: Action) -> float:
         """
@@ -47,7 +48,7 @@ class SarsaAgent:
         """
         value = 0.0
         # BEGIN SOLUTION
-        action = self.get_best_action(state)
+        action = self.get_action(state)
         value = self.get_qvalue(state, action)
         # END SOLUTION
         return value
@@ -66,7 +67,6 @@ class SarsaAgent:
         target = reward + self.gamma * self.get_value(next_state)
         td_error = target - self.get_qvalue(state, action)
         q_value = self.get_qvalue(state, action) + self.learning_rate * td_error
-        
         # END SOLUTION
 
         self.set_qvalue(state, action, q_value)
@@ -89,7 +89,7 @@ class SarsaAgent:
         action = self.legal_actions[0]
 
         # BEGIN SOLUTION
-        if (random.random() < 0.1) or (state not in self._qvalues):
+        if (random.random() < 0.05) :
             return random.choice(self.legal_actions)
         action = self.get_best_action(state)
         # END SOLUTION
