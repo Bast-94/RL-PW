@@ -11,4 +11,6 @@ tiny-testsuite:
 taxi:
 	poetry run python taxi.py
 video:
+	# check artifacts directory exists
+	mkdir -p artifacts
 	poetry run python video_maker.py
