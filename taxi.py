@@ -29,7 +29,7 @@ from tqdm import tqdm
 from qlearning import QLearningAgent
 from qlearning_eps_scheduling import QLearningAgentEpsScheduling
 from sarsa import SarsaAgent
-
+from video_maker import create_gif
 env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n  # type: ignore
 
@@ -41,30 +41,8 @@ agent = QLearningAgent(
     learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
 )
 
-"""def run_episode(env: gym.Env, agent: QLearningAgent, t_max: int = int(1e4), train_mode:bool = True) -> float:
-    total_reward: t.SupportsFloat = 0.0
-    s, _ = env.reset()
 
-    for i in range(t_max):
-        # Get agent to pick action given state s
-        a = agent.get_action(s)
-
-        next_s, r, done, _, _ = env.step(a)
-
-        # Train agent for state s
-        # BEGIN SOLUTION
-
-        total_reward += r
-        if train_mode:
-            agent.update(state=s, action=a, next_state=next_s, reward=r)
-        s = next_s
-        if done:
-            break
-        # END SOLUTION
-
-    return total_reward"""
-def play_and_train(
-    env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float:
+def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float:
     """
     This function should
     - run a full game, actions given by agent.getAction(s)
@@ -99,15 +77,17 @@ if __name__ == "__main__":
         rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
             print("mean reward", np.mean(rewards[-100:]))
-
+    
+    
     assert np.mean(rewards[-100:]) > 0.0
+    
 #################################################
 # 2. Play with QLearningAgentEpsScheduling
 #################################################
 
 
 agent = QLearningAgentEpsScheduling(
-    learning_rate=0.5, epsilon=0.1, gamma=0.9, legal_actions=list(range(n_actions))
+    learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
 )
 if __name__ == "__main__":
     rewards = []
@@ -135,3 +115,5 @@ if __name__ == "__main__":
         rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
             print("mean reward", np.mean(rewards[-100:]))
+    
+    assert np.mean(rewards[-100:]) > 0.0
