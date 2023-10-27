@@ -7,7 +7,6 @@ from tqdm import tqdm
 from qlearning import QLearningAgent
 from qlearning_eps_scheduling import QLearningAgentEpsScheduling
 from sarsa import SarsaAgent
-from taxi import play_and_train
 from train_agent import train
 
 env = gym.make("Taxi-v3", render_mode="rgb_array")
@@ -37,8 +36,7 @@ artifact_dir = "artifacts"
 ep_per_step = 100
 
 
-def create_gif(agent, name,ep_per_step, nb_step,artifact_dir):
-    
+def create_gif(agent, name, ep_per_step, nb_step, artifact_dir):
     gif_writer = imageio.get_writer(f"{artifact_dir}/{name}.gif", mode="I")
     for train_step in tqdm(range(1, nb_step + 1)):
         print(train_step)
@@ -63,10 +61,13 @@ def create_gif(agent, name,ep_per_step, nb_step,artifact_dir):
                 2,
                 cv2.LINE_AA,
             )
-            
+
             gif_writer.append_data(img)
             if done:
                 break
 
     gif_writer.close()
-    
+
+
+for agent, name in zip(agents, agent_names):
+    create_gif(agent, name, 1000, 1, artifact_dir)

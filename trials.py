@@ -16,8 +16,6 @@ parser.add_argument("-i", "--img_output_file", type=str, default=None)
 img_output_file = parser.parse_args().img_output_file
 verbose = parser.parse_args().verbose
 epochs = parser.parse_args().epochs
-
-
 env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n  # type: ignore
 s, _ = env.reset()

@@ -29,7 +29,8 @@ from tqdm import tqdm
 from qlearning import QLearningAgent
 from qlearning_eps_scheduling import QLearningAgentEpsScheduling
 from sarsa import SarsaAgent
-from video_maker import create_gif
+
+# from video_maker import create_gif
 env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n  # type: ignore
 
@@ -77,10 +78,9 @@ if __name__ == "__main__":
         rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
             print("mean reward", np.mean(rewards[-100:]))
-    
-    
+
     assert np.mean(rewards[-100:]) > 0.0
-    
+
 #################################################
 # 2. Play with QLearningAgentEpsScheduling
 #################################################
@@ -115,5 +115,5 @@ if __name__ == "__main__":
         rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
             print("mean reward", np.mean(rewards[-100:]))
-    
+
     assert np.mean(rewards[-100:]) > 0.0

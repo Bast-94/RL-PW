@@ -89,7 +89,7 @@ class SarsaAgent:
         action = self.legal_actions[0]
 
         # BEGIN SOLUTION
-        if (random.random() < 0.05) :
+        if random.random() < 0.05:
             return random.choice(self.legal_actions)
         action = self.get_best_action(state)
         # END SOLUTION
