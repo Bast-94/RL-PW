@@ -39,6 +39,4 @@ jobs:
       with:
         name: produced-videos
         path: |
-          sarsa.avi
-          q_learning.avi
-          eps_scheduling.avi
+          artifacts
