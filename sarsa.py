@@ -5,6 +5,8 @@ from collections import defaultdict
 import gymnasium as gym
 import numpy as np
 
+from policy import softmax_policy
+
 Action = int
 State = int
 Info = t.TypedDict("Info", {"prob": float, "action_mask": np.ndarray})
@@ -17,6 +19,7 @@ class SarsaAgent:
         learning_rate: float,
         gamma: float,
         legal_actions: t.List[Action],
+        policy=None,
     ):
         """
         SARSA  Agent
@@ -27,7 +30,10 @@ class SarsaAgent:
         self._qvalues: QValues = defaultdict(lambda: defaultdict(int))
         self.learning_rate = learning_rate
         self.gamma = gamma
-        self.prev_action = None
+        if policy == "softmax":
+            self.policy = softmax_policy
+        else:
+            self.policy = policy
 
     def get_qvalue(self, state: State, action: Action) -> float:
         """
@@ -54,7 +60,12 @@ class SarsaAgent:
         return value
 
     def update(
-        self, state: State, action: Action, reward: t.SupportsFloat, next_state: State
+        self,
+        state: State,
+        action: Action,
+        reward: t.SupportsFloat,
+        next_state: State,
+        next_action: Action,
     ):
         """
         You should do your Q-Value update here (s'=next_state):
@@ -64,7 +75,7 @@ class SarsaAgent:
         """
         q_value = 0.0
         # BEGIN SOLUTION
-        target = reward + self.gamma * self.get_value(next_state)
+        target = reward + self.gamma * self.get_qvalue(next_state, next_action)
         td_error = target - self.get_qvalue(state, action)
         q_value = self.get_qvalue(state, action) + self.learning_rate * td_error
         # END SOLUTION
@@ -89,9 +100,36 @@ class SarsaAgent:
         action = self.legal_actions[0]
 
         # BEGIN SOLUTION
-        if random.random() < 0.05:
-            return random.choice(self.legal_actions)
-        action = self.get_best_action(state)
+        if self.policy == None:
+            if random.random() < 0.01:
+                return random.choice(self.legal_actions)
+            action = self.get_best_action(state)
+        elif self.policy == "softmax":
+            action = self.policy(self, state)
         # END SOLUTION
 
         return action
+
+    def play_and_train(self, env: gym.Env, t_max: int = int(1e4)):
+        total_reward = 0.0
+        s, _ = env.reset()
+        a = self.get_action(s)
+        for i in range(t_max):
+            # Get agent to pick action given state s
+            next_s, r, done, _, _ = env.step(a)
+
+            # Train agent for state s
+            # BEGIN SOLUTION
+
+            total_reward += r
+            next_action = self.get_action(next_s)
+            self.update(
+                state=s, action=a, next_state=next_s, reward=r, next_action=next_action
+            )
+            s = next_s
+            a = next_action
+            if done:
+                break
+            # END SOLUTION
+
+        return total_reward
