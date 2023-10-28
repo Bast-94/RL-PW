@@ -12,6 +12,12 @@ tiny-testsuite:
 taxi:
 	poetry run python taxi.py
 
+produced_files = $(wildcard artifacts/*.gif) $(wildcard artifacts/*.png) $(wildcard artifacts/*.jpg)
+
+save_produced: taxi	
+	mkdir -p img
+	mv $(produced_files) -t img
+
 commit: reformat
 	sh committer.sh
 
