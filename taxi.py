@@ -141,20 +141,11 @@ if __name__ == "__main__":
     text_kwargs = dict(
         ha="center", va="center", fontsize=28, color="C1", transform=ax.transAxes
     )
-    ax.text(0.5, 0.5, f"Q-Learning: {final_ql_reward:.2f}", transform=ax.transAxes)
-    ax.text(
-        0.6,
-        0.5,
-        f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}",
-        transform=ax.transAxes,
-    )
-    ax.text(0.7, 0.5, f"SARSA: {final_sarsa_reward:.2f}", transform=ax.transAxes)
-    ax.text(
-        0.8,
-        0.5,
-        f"SARSA Softmax: {final_sarsa_softmax_reward:.2f}",
-        transform=ax.transAxes,
-    )
+    text_to_plot = f"Q-Learning: {final_ql_reward:.2f}"
+    text_to_plot += "\n" + f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}"
+    text_to_plot += "\n" + f"SARSA: {final_sarsa_reward:.2f}"
+    text_to_plot += "\n" + f"SARSA Softmax: {final_sarsa_softmax_reward:.2f}"
+    ax.text(0.5, 0.5, text_to_plot, **text_kwargs)
 
     ax.set_xlabel("Episode")
 
