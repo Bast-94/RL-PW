@@ -12,6 +12,9 @@ tiny-testsuite:
 taxi:
 	poetry run python taxi.py
 
+commit: reformat
+	sh committer.sh
+
 video:
 	# check artifacts directory exists
 	mkdir -p artifacts
