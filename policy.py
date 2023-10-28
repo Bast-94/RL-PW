@@ -6,5 +6,7 @@ def softmax_policy(agent, state):
         [agent.get_qvalue(state, action) for action in agent.legal_actions]
     )
     action_values -= np.max(action_values)
+
     probabilities = np.exp(action_values) / np.sum(np.exp(action_values))
+    # print(f'probabilities: {probabilities}')
     return np.random.choice(agent.legal_actions, p=probabilities)
