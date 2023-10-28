@@ -39,5 +39,5 @@ def create_gif(
             # gif_writer.append_data(img)
             if done:
                 break
-    imageio.mimsave(f"{artifact_dir}/{name}.gif", frames, fps=16)
+    imageio.mimsave(f"{artifact_dir}/{name}.gif", frames, fps=16,loop=0)
     # gif_writer.close()

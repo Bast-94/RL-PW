@@ -14,6 +14,4 @@ commiter() {
             git commit -m "UPDATE($file): $msg"
         done
 }
-
-
 commiter $*
