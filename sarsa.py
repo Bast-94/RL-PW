@@ -102,7 +102,7 @@ class SarsaAgent:
         # BEGIN SOLUTION
         if self.policy == None:
             action = self.get_best_action(state)
-        elif self.policy == "softmax":
+        elif self.policy == softmax_policy:
             action = self.policy(self, state)
         # END SOLUTION
 
