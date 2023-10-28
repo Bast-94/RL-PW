@@ -33,7 +33,7 @@ jobs:
         make testsuite
     - name: Generate videos
       run: |
-        make taxi
+        mkdir atrifacts && make taxi
     - name: download production artifacts
       uses: actions/upload-artifact@v3
       with:
