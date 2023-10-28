@@ -64,7 +64,7 @@ if __name__ == "__main__":
         if i % 100 == 0:
             print("mean reward", np.mean(ql_rewards[-100:]))
         if i in EP_STAGES:
-            print("generate gif dor stage", i)
+            print("generate gif for stage", i)
             create_gif(
                 agent=agent,
                 name=f"qlearning-{i}-ep",
@@ -97,10 +97,10 @@ if __name__ == "__main__":
         if i % 100 == 0:
             print("mean reward", np.mean(ql_eps_rewards[-100:]))
         if i in EP_STAGES:
-            print("generate gif dor stage", i)
+            print("generate gif for stage", i)
             create_gif(
                 agent=agent,
-                name=f"qlearning-{i}-ep",
+                name=f"qlearning-eps-{i}-ep",
                 artifact_dir="artifacts",
                 t_max=int(1e4),
                 env=env,
@@ -130,7 +130,7 @@ if __name__ == "__main__":
         if i % 100 == 0:
             print("mean reward", np.mean(sarsa_rewards[-100:]))
         if i in EP_STAGES:
-            print("generate gif dor stage", i)
+            print("generate gif for stage", i)
             create_gif(
                 agent=agent,
                 name=f"sarsa-{i}-ep",
