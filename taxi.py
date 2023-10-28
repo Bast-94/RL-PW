@@ -19,6 +19,7 @@ et vos résultats (max 1 page).
 """
 
 import logging
+import os
 import typing as t
 
 import gymnasium as gym
@@ -36,14 +37,6 @@ env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n  # type: ignore
 
 
-#################################################
-# 1. Play with QLearningAgent
-#################################################
-agent = QLearningAgent(
-    learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
-)
-
-
 def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float:
     """
     This function should
@@ -55,83 +48,83 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
     return agent.play_and_train(env, t_max)
 
 
-rewards = []
+#################################################
+# 1. Play with QLearningAgent
+#################################################
+
 if __name__ == "__main__":
+    ql_rewards = []
+    print("QLEARNING")
     agent = QLearningAgentEpsScheduling(
         learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
     )
     for i in range(1000):
-        rewards.append(play_and_train(env, agent))
+        ql_rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
-            print("mean reward", np.mean(rewards[-100:]))
+            print("mean reward", np.mean(ql_rewards[-100:]))
 
-    assert np.mean(rewards[-100:]) > 0.0
+    assert np.mean(ql_rewards[-100:]) > 0.0
     create_gif(
         agent=agent,
         name="qlearning",
-        ep_per_step=1000,
-        nb_step=1,
         artifact_dir="artifacts",
         t_max=int(1e4),
         env=env,
     )
 
-#################################################
-# 2. Play with QLearningAgentEpsScheduling
-#################################################
+    #################################################
+    # 2. Play with QLearningAgentEpsScheduling
+    #################################################
 
+    agent = QLearningAgentEpsScheduling(
+        learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
+    )
 
-agent = QLearningAgentEpsScheduling(
-    learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
-)
-if __name__ == "__main__":
-    rewards = []
+    ql_eps_rewards = []
+    print("QLEARNING EPS")
     for i in range(1000):
-        rewards.append(play_and_train(env, agent))
+        ql_eps_rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
-            print("mean reward", np.mean(rewards[-100:]))
+            print("mean reward", np.mean(ql_eps_rewards[-100:]))
 
-    assert np.mean(rewards[-100:]) > 0.0
+    assert np.mean(ql_eps_rewards[-100:]) > 0.0
     create_gif(
         agent=agent,
         name="qlearning_eps",
-        ep_per_step=1000,
-        nb_step=1,
         artifact_dir="artifacts",
         t_max=int(1e4),
         env=env,
     )
-    agent = QLearningAgentEpsScheduling(
-        learning_rate=0.5,
-        epsilon=0.1,
-        gamma=0.99,
-        legal_actions=list(range(n_actions)),
-        policy="softmax",
-    )
 
+    ####################
+    # 3. Play with SARSA
+    ####################
 
-####################
-# 3. Play with SARSA
-####################
-
-if __name__ == "__main__":
+    print("SARSA")
     agent = SarsaAgent(
         learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions))
     )
+    sarsa_rewards = []
 
-    rewards = []
     for i in range(1000):
-        rewards.append(play_and_train(env, agent))
+        sarsa_rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
-            print("mean reward", np.mean(rewards[-100:]))
+            print("mean reward", np.mean(sarsa_rewards[-100:]))
 
-    assert np.mean(rewards[-100:]) > 0.0
+    assert np.mean(sarsa_rewards[-100:]) > 0.0
     create_gif(
-        agent=agent,
-        name="sarsa",
-        ep_per_step=1000,
-        nb_step=1,
-        artifact_dir="artifacts",
-        t_max=int(1e4),
-        env=env,
+        agent=agent, name="sarsa", artifact_dir="artifacts", t_max=int(1e4), env=env
     )
+
+    # plot rewards
+    fig = plt.figure(figsize=(10, 5))
+    ax = fig.add_subplot(111)
+    ax.plot(ql_rewards, label="Q-Learning")
+    ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling")
+    ax.plot(sarsa_rewards, label="SARSA")
+    ax.set_xlabel("Episode")
+    ax.set_ylabel("Reward")
+    ax.set_title("Rewards for different algorithms")
+    ax.legend()
+    img_path = os.path.join("artifacts", "rewards.png")
+    plt.savefig(img_path)
