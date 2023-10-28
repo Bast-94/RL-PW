@@ -122,8 +122,8 @@ class QLearningAgent:
             # Get agent to pick action given state s
             a = self.get_action(s)
 
-            next_s, r, done, _, _ = env.step(a)
-
+            next_s, r, terminated, truncated, _ = env.step(a)
+            done = terminated or truncated
             # Train agent for state s
             # BEGIN SOLUTION
 
