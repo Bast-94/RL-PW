@@ -35,6 +35,7 @@ from video_maker import create_gif
 # from video_maker import create_gif
 env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n  # type: ignore
+IMG_DIR = "img"
 
 
 def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float:
@@ -63,7 +64,7 @@ def get_rewards_and_generate_gifs(agent, env, name):
             create_gif(
                 agent=agent,
                 name=f"{name}-{i}-ep",
-                artifact_dir="artifacts",
+                artifact_dir=IMG_DIR,
                 t_max=int(1e4),
                 env=env,
             )
@@ -138,5 +139,5 @@ if __name__ == "__main__":
         f"Rewards for different algorithms, smoothed over window size {window}"
     )
     ax.legend()
-    img_path = os.path.join("artifacts", "rewards.png")
+    img_path = os.path.join(IMG_DIR, "rewards.png")
     plt.savefig(img_path)

@@ -39,4 +39,4 @@ jobs:
       with:
         name: produced-videos
         path: |
-          artifacts
+          img
