@@ -49,72 +49,47 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
 
 
 EP_STAGES = [250, 500, 1000]
-#################################################
-# 1. Play with QLearningAgent
-#################################################
+
+
+def get_rewards_and_generate_gifs(agent, env, name):
+    rewards = []
+    nb_episode = max(EP_STAGES)
+    for i in range(1, nb_episode + 1):
+        rewards.append(play_and_train(env, agent))
+        if i % 100 == 0:
+            print("mean reward", np.mean(rewards[-100:]))
+        if i in EP_STAGES:
+            print("generate gif for stage", i)
+            create_gif(
+                agent=agent,
+                name=f"{name}-{i}-ep",
+                artifact_dir="artifacts",
+                t_max=int(1e4),
+                env=env,
+            )
+    assert np.mean(rewards[-100:]) > 0.0
+    return rewards
+
 
 if __name__ == "__main__":
-    ql_rewards = []
+    #################################################
+    # 1. Play with QLearningAgent
+    #################################################
     print("QLEARNING")
     agent = QLearningAgentEpsScheduling(
         learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
     )
-    for i in range(1000):
-        ql_rewards.append(play_and_train(env, agent))
-        if i % 100 == 0:
-            print("mean reward", np.mean(ql_rewards[-100:]))
-        if i in EP_STAGES:
-            print("generate gif for stage", i)
-            create_gif(
-                agent=agent,
-                name=f"qlearning-{i}-ep",
-                artifact_dir="artifacts",
-                t_max=int(1e4),
-                env=env,
-            )
-
-    assert np.mean(ql_rewards[-100:]) > 0.0
-    create_gif(
-        agent=agent,
-        name="qlearning",
-        artifact_dir="artifacts",
-        t_max=int(1e4),
-        env=env,
-    )
+    ql_rewards = get_rewards_and_generate_gifs(agent, env, "qlearning")
 
     #################################################
     # 2. Play with QLearningAgentEpsScheduling
     #################################################
-
+    print("QLEARNING EPS")
     agent = QLearningAgentEpsScheduling(
         learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
     )
 
-    ql_eps_rewards = []
-    print("QLEARNING EPS")
-    for i in range(1000):
-        ql_eps_rewards.append(play_and_train(env, agent))
-        if i % 100 == 0:
-            print("mean reward", np.mean(ql_eps_rewards[-100:]))
-        if i in EP_STAGES:
-            print("generate gif for stage", i)
-            create_gif(
-                agent=agent,
-                name=f"qlearning-eps-{i}-ep",
-                artifact_dir="artifacts",
-                t_max=int(1e4),
-                env=env,
-            )
-
-    assert np.mean(ql_eps_rewards[-100:]) > 0.0
-    create_gif(
-        agent=agent,
-        name="qlearning_eps",
-        artifact_dir="artifacts",
-        t_max=int(1e4),
-        env=env,
-    )
-
+    ql_eps_rewards = get_rewards_and_generate_gifs(agent, env, "qlearning-eps")
     ####################
     # 3. Play with SARSA
     ####################
@@ -123,27 +98,17 @@ if __name__ == "__main__":
     agent = SarsaAgent(
         learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions))
     )
-    sarsa_rewards = []
-
-    for i in range(1000):
-        sarsa_rewards.append(play_and_train(env, agent))
-        if i % 100 == 0:
-            print("mean reward", np.mean(sarsa_rewards[-100:]))
-        if i in EP_STAGES:
-            print("generate gif for stage", i)
-            create_gif(
-                agent=agent,
-                name=f"sarsa-{i}-ep",
-                artifact_dir="artifacts",
-                t_max=int(1e4),
-                env=env,
-            )
-
-    assert np.mean(sarsa_rewards[-100:]) > 0.0
-    create_gif(
-        agent=agent, name="sarsa", artifact_dir="artifacts", t_max=int(1e4), env=env
+    sarsa_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa")
+    #################################
+    # 3. Play with SARSA with softmax
+    #################################
+    agent = SarsaAgent(
+        learning_rate=0.5,
+        gamma=0.99,
+        legal_actions=list(range(n_actions)),
+        policy="softmax",
     )
-
+    sarsa_softmax_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa-softmax")
     # plot rewards
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(111)
@@ -153,13 +118,19 @@ if __name__ == "__main__":
     ql_rewards = np.array(ql_rewards)
     ql_eps_rewards = np.array(ql_eps_rewards)
     sarsa_rewards = np.array(sarsa_rewards)
+    sarsa_softmax_rewards = np.array(sarsa_softmax_rewards)
+
     ql_rewards = np.convolve(ql_rewards, np.ones(window) / window, mode="valid")
     ql_eps_rewards = np.convolve(ql_eps_rewards, np.ones(window) / window, mode="valid")
     sarsa_rewards = np.convolve(sarsa_rewards, np.ones(window) / window, mode="valid")
+    sarsa_softmax_rewards = np.convolve(
+        sarsa_softmax_rewards, np.ones(window) / window, mode="valid"
+    )
 
     ax.plot(ql_rewards, label="Q-Learning", color="red")
     ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling", color="green")
     ax.plot(sarsa_rewards, label="SARSA", color="blue")
+    ax.plot(sarsa_softmax_rewards, label="SARSA Softmax", color="orange")
     ax.set_xlabel("Episode")
 
     ax.set_ylabel("Reward")
