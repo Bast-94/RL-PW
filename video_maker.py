@@ -11,6 +11,7 @@ def create_gif(
     from train_agent import train
 
     gif_writer = imageio.get_writer(f"{artifact_dir}/{name}.gif", mode="I")
+    frames = []
     for train_step in tqdm(range(1, nb_step + 1)):
         print(train_step)
         train(agent, env, t_max, num_episodes=ep_per_step)
@@ -34,9 +35,9 @@ def create_gif(
                 thickness=1,
                 lineType=cv2.LINE_AA,
             )
-
+            frames.append(img)
             gif_writer.append_data(img)
             if done:
                 break
-
-    gif_writer.close()
+    imageio.mimsave(f"{artifact_dir}/{name}.gif", frames, fps=16)
+    # gif_writer.close()
