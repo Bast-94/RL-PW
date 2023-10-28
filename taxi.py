@@ -139,7 +139,7 @@ if __name__ == "__main__":
     ax.plot(sarsa_softmax_rewards, label="SARSA Softmax", color="orange")
 
     text_kwargs = dict(
-        ha="center", va="center", fontsize=12, color="C1", transform=ax.transAxes
+        ha="center", va="center", fontsize=12, transform=ax.transAxes, color="black"
     )
     text_to_plot = f"Mean reward over last {window} episodes"
     text_to_plot += "\n" + f"Q-Learning: {final_ql_reward:.2f}"
