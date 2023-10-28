@@ -50,7 +50,7 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
     - train agent using agent.update(...) whenever possible
     - return total rewardb
     """
-    total_reward: t.SupportsFloat = 0.0
+    """total_reward: t.SupportsFloat = 0.0
     s, _ = env.reset()
 
     for i in range(t_max):
@@ -69,7 +69,8 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
             break
         # END SOLUTION
 
-    return total_reward
+    return total_reward"""
+    return agent.play_and_train(env, t_max)
 
 
 rewards = []
