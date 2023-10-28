@@ -6,15 +6,13 @@
 
 #### Politique $\epsilon$ greedy
 
-### Performances
 
 ![q-learning](img/qlearning.gif)
 
-## Q-learning with an epsilon scheduling
+## Q-learning avec un ordonnancement de $epsilon$
 
 ### Implementation
 
-### Performances
 
 ![q-learning-eps](img/qlearning_eps.gif)
 
@@ -22,7 +20,8 @@
 
 ### Implementation
 
-### Performances
 
 ![q-learning-eps](img/qlearning_eps.gif)
+
+#
 
