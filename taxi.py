@@ -119,12 +119,21 @@ if __name__ == "__main__":
     # plot rewards
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(111)
+    # rolling window along the rewards to smooth the curve
+
+    window = 100
+    ql_rewards = np.array(ql_rewards)
+    ql_eps_rewards = np.array(ql_eps_rewards)
+    sarsa_rewards = np.array(sarsa_rewards)
+    ql_rewards = np.convolve(ql_rewards, np.ones(window) / window, mode="valid")
+    ql_eps_rewards = np.convolve(ql_eps_rewards, np.ones(window) / window, mode="valid")
+    sarsa_rewards = np.convolve(sarsa_rewards, np.ones(window) / window, mode="valid")
+
     ax.plot(ql_rewards, label="Q-Learning")
     ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling")
     ax.plot(sarsa_rewards, label="SARSA")
     ax.set_xlabel("Episode")
-    ax.set_xscale("symlog")
-    # ax.set_yscale("symlog")
+
     ax.set_ylabel("Reward")
     ax.set_title("Rewards for different algorithms")
     ax.legend()
