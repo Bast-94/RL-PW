@@ -165,7 +165,7 @@ test/
 values.npy
 tiny-test.py
 requirements.txt
-artifacts/
 
+artifacts
 output
 *.avi

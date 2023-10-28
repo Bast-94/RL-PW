@@ -15,6 +15,9 @@ taxi:
 commit: reformat
 	sh committer.sh
 
+push: commit
+	git push
+
 video:
 	# check artifacts directory exists
 	mkdir -p artifacts
