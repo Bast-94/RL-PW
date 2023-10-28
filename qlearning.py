@@ -5,6 +5,8 @@ from collections import defaultdict
 import gymnasium as gym
 import numpy as np
 
+from policy import softmax_policy
+
 Action = int
 State = int
 Info = t.TypedDict("Info", {"prob": float, "action_mask": np.ndarray})
@@ -18,6 +20,7 @@ class QLearningAgent:
         epsilon: float,
         gamma: float,
         legal_actions: t.List[Action],
+        policy: str = None,
     ):
         """
         Q-Learning Agent
@@ -29,6 +32,10 @@ class QLearningAgent:
         self.learning_rate = learning_rate
         self.epsilon = epsilon
         self.gamma = gamma
+        if policy == "softmax":
+            self.policy = softmax_policy
+        else:
+            self.policy = policy
 
     def get_qvalue(self, state: State, action: Action) -> float:
         """
@@ -111,7 +118,7 @@ class QLearningAgent:
         total_reward = 0.0
         s, _ = env.reset()
 
-        for i in range(t_max):
+        for _ in range(t_max):
             # Get agent to pick action given state s
             a = self.get_action(s)
 
