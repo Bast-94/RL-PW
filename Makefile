@@ -29,8 +29,3 @@ quick_commit:
 
 quick_push: quick_commit
 	git push
-
-video:
-	# check artifacts directory exists
-	
-	poetry run python video_maker.py
