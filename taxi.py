@@ -57,6 +57,9 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
 
 rewards = []
 if __name__ == "__main__":
+    agent = QLearningAgentEpsScheduling(
+        learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
+    )
     for i in range(1000):
         rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
@@ -97,6 +100,13 @@ if __name__ == "__main__":
         artifact_dir="artifacts",
         t_max=int(1e4),
         env=env,
+    )
+    agent = QLearningAgentEpsScheduling(
+        learning_rate=0.5,
+        epsilon=0.1,
+        gamma=0.99,
+        legal_actions=list(range(n_actions)),
+        policy="softmax",
     )
 
 
