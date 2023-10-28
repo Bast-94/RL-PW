@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 from qlearning import QLearningAgent
+from sarsa import SarsaAgent
 
 
 @pytest.fixture
@@ -23,6 +24,17 @@ def agent(env):
         epsilon=0.25,
         gamma=0.99,
         legal_actions=list(range(n_actions)),
+    )
+
+
+@pytest.fixture
+def softmax_sarsa_agent(env):
+    n_actions = env.action_space.n
+    return SarsaAgent(
+        learning_rate=0.5,
+        gamma=0.99,
+        legal_actions=list(range(n_actions)),
+        policy="softmax",
     )
 
 
@@ -45,3 +57,8 @@ def test_b(env, agent):
             print(res)
         i += 1
     assert i <= 200
+
+
+def test_softmax(softmax_sarsa_agent: SarsaAgent, env):
+    env.reset()
+    softmax_sarsa_agent.play_and_train(env, t_max=5)
