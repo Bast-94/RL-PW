@@ -63,7 +63,15 @@ if __name__ == "__main__":
             print("mean reward", np.mean(rewards[-100:]))
 
     assert np.mean(rewards[-100:]) > 0.0
-    create_gif(agent, "qlearning", 1000, 1, "artifacts", t_max=int(1e4), env=env)
+    create_gif(
+        agent=agent,
+        name="qlearning",
+        ep_per_step=1000,
+        nb_step=1,
+        artifact_dir="artifacts",
+        t_max=int(1e4),
+        env=env,
+    )
 
 #################################################
 # 2. Play with QLearningAgentEpsScheduling
@@ -81,8 +89,15 @@ if __name__ == "__main__":
             print("mean reward", np.mean(rewards[-100:]))
 
     assert np.mean(rewards[-100:]) > 0.0
-
-    # TODO: créer des vidéos de l'agent en action
+    create_gif(
+        agent=agent,
+        name="qlearning_eps_scheduling",
+        ep_per_step=1000,
+        nb_step=1,
+        artifact_dir="artifacts",
+        t_max=int(1e4),
+        env=env,
+    )
 
 
 ####################
@@ -101,3 +116,12 @@ if __name__ == "__main__":
             print("mean reward", np.mean(rewards[-100:]))
 
     assert np.mean(rewards[-100:]) > 0.0
+    create_gif(
+        agent=agent,
+        name="sarsa",
+        ep_per_step=1000,
+        nb_step=1,
+        artifact_dir="artifacts",
+        t_max=int(1e4),
+        env=env,
+    )
