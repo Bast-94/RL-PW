@@ -20,5 +20,5 @@ push: commit
 
 video:
 	# check artifacts directory exists
-	mkdir -p artifacts
+	
 	poetry run python video_maker.py
