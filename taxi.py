@@ -114,7 +114,7 @@ if __name__ == "__main__":
     ax = fig.add_subplot(111)
     # rolling window along the rewards to smooth the curve
 
-    window = 20
+    window = 50
     ql_rewards = np.array(ql_rewards)
     ql_eps_rewards = np.array(ql_eps_rewards)
     sarsa_rewards = np.array(sarsa_rewards)
