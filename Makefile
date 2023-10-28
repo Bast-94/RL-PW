@@ -34,4 +34,7 @@ quick_push: quick_commit
 full_test: reformat testsuite save_produced
 	# echo in green
 	@echo "\033[0;32mAll tests passed\033[0m"
+
+clean:
+	@rm -rf img
 	
