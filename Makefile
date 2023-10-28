@@ -24,6 +24,12 @@ commit: reformat
 push: commit
 	git push
 
+quick_commit:
+	sh committer.sh quick
+
+quick_push: quick_commit
+	git push
+
 video:
 	# check artifacts directory exists
 	
