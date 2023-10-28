@@ -14,7 +14,7 @@ taxi:
 
 produced_files = $(wildcard artifacts/*.gif) $(wildcard artifacts/*.png) $(wildcard artifacts/*.jpg)
 
-save_produced: taxi	
+save_produced: reformat taxi	
 	mkdir -p img
 	mv $(produced_files) -t img
 
