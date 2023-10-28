@@ -94,7 +94,7 @@ if __name__ == "__main__":
     assert np.mean(rewards[-100:]) > 0.0
     create_gif(
         agent=agent,
-        name="qlearning_eps_scheduling",
+        name="qlearning_eps",
         ep_per_step=1000,
         nb_step=1,
         artifact_dir="artifacts",
