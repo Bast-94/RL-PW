@@ -106,3 +106,25 @@ class QLearningAgent:
         # END SOLUTION
 
         return action
+
+    def play_and_train(self, env: gym.Env, t_max: int = int(1e4)):
+        total_reward = 0.0
+        s, _ = env.reset()
+
+        for i in range(t_max):
+            # Get agent to pick action given state s
+            a = self.get_action(s)
+
+            next_s, r, done, _, _ = env.step(a)
+
+            # Train agent for state s
+            # BEGIN SOLUTION
+
+            total_reward += r
+            self.update(state=s, action=a, next_state=next_s, reward=r)
+            s = next_s
+            if done:
+                break
+            # END SOLUTION
+
+        return total_reward
