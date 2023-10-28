@@ -48,6 +48,7 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
     return agent.play_and_train(env, t_max)
 
 
+EP_STAGES = [250, 500, 1000]
 #################################################
 # 1. Play with QLearningAgent
 #################################################
@@ -62,6 +63,15 @@ if __name__ == "__main__":
         ql_rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
             print("mean reward", np.mean(ql_rewards[-100:]))
+        if i in EP_STAGES:
+            print("generate gif dor stage", i)
+            create_gif(
+                agent=agent,
+                name=f"qlearning-{i}-ep",
+                artifact_dir="artifacts",
+                t_max=int(1e4),
+                env=env,
+            )
 
     assert np.mean(ql_rewards[-100:]) > 0.0
     create_gif(
@@ -86,6 +96,15 @@ if __name__ == "__main__":
         ql_eps_rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
             print("mean reward", np.mean(ql_eps_rewards[-100:]))
+        if i in EP_STAGES:
+            print("generate gif dor stage", i)
+            create_gif(
+                agent=agent,
+                name=f"qlearning-{i}-ep",
+                artifact_dir="artifacts",
+                t_max=int(1e4),
+                env=env,
+            )
 
     assert np.mean(ql_eps_rewards[-100:]) > 0.0
     create_gif(
@@ -110,6 +129,15 @@ if __name__ == "__main__":
         sarsa_rewards.append(play_and_train(env, agent))
         if i % 100 == 0:
             print("mean reward", np.mean(sarsa_rewards[-100:]))
+        if i in EP_STAGES:
+            print("generate gif dor stage", i)
+            create_gif(
+                agent=agent,
+                name=f"sarsa-{i}-ep",
+                artifact_dir="artifacts",
+                t_max=int(1e4),
+                env=env,
+            )
 
     assert np.mean(sarsa_rewards[-100:]) > 0.0
     create_gif(
@@ -121,7 +149,7 @@ if __name__ == "__main__":
     ax = fig.add_subplot(111)
     # rolling window along the rewards to smooth the curve
 
-    window = 100
+    window = 20
     ql_rewards = np.array(ql_rewards)
     ql_eps_rewards = np.array(ql_eps_rewards)
     sarsa_rewards = np.array(sarsa_rewards)
@@ -129,13 +157,15 @@ if __name__ == "__main__":
     ql_eps_rewards = np.convolve(ql_eps_rewards, np.ones(window) / window, mode="valid")
     sarsa_rewards = np.convolve(sarsa_rewards, np.ones(window) / window, mode="valid")
 
-    ax.plot(ql_rewards, label="Q-Learning")
-    ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling")
-    ax.plot(sarsa_rewards, label="SARSA")
+    ax.plot(ql_rewards, label="Q-Learning", color="red")
+    ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling", color="green")
+    ax.plot(sarsa_rewards, label="SARSA", color="blue")
     ax.set_xlabel("Episode")
 
     ax.set_ylabel("Reward")
-    ax.set_title("Rewards for different algorithms")
+    ax.set_title(
+        f"Rewards for different algorithms, smoothed over window size {window}"
+    )
     ax.legend()
     img_path = os.path.join("artifacts", "rewards.png")
     plt.savefig(img_path)
