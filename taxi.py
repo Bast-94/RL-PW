@@ -124,7 +124,7 @@ if __name__ == "__main__":
     ax.plot(sarsa_rewards, label="SARSA")
     ax.set_xlabel("Episode")
     ax.set_xscale("symlog")
-    ax.set_yscale("symlog")
+    # ax.set_yscale("symlog")
     ax.set_ylabel("Reward")
     ax.set_title("Rewards for different algorithms")
     ax.legend()
