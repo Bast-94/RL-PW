@@ -114,7 +114,8 @@ class SarsaAgent:
         a = self.get_action(s)
         for i in range(t_max):
             # Get agent to pick action given state s
-            next_s, r, done, _, _ = env.step(a)
+            next_s, r, terminated, truncated, _ = env.step(a)
+            done = terminated or truncated
 
             # Train agent for state s
             # BEGIN SOLUTION
@@ -126,6 +127,7 @@ class SarsaAgent:
             )
             s = next_s
             a = next_action
+
             if done:
                 break
             # END SOLUTION
