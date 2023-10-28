@@ -12,5 +12,5 @@ def train(
     num_episodes: int = int(1e4),
 ):
     for _ in tqdm(range(num_episodes), desc="Training"):
-        play_and_train(env, agent, t_max)
+        agent.play_and_train(env, t_max)
     return agent
