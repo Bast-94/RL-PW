@@ -29,6 +29,7 @@ from tqdm import tqdm
 from qlearning import QLearningAgent
 from qlearning_eps_scheduling import QLearningAgentEpsScheduling
 from sarsa import SarsaAgent
+from video_maker import create_gif
 
 # from video_maker import create_gif
 env = gym.make("Taxi-v3", render_mode="rgb_array")
@@ -50,26 +51,7 @@ def play_and_train(env: gym.Env, agent: QLearningAgent, t_max=int(1e4)) -> float
     - train agent using agent.update(...) whenever possible
     - return total rewardb
     """
-    """total_reward: t.SupportsFloat = 0.0
-    s, _ = env.reset()
 
-    for i in range(t_max):
-        # Get agent to pick action given state s
-        a = agent.get_action(s)
-
-        next_s, r, done, _, _ = env.step(a)
-
-        # Train agent for state s
-        # BEGIN SOLUTION
-
-        total_reward += r
-        agent.update(state=s, action=a, next_state=next_s, reward=r)
-        s = next_s
-        if done:
-            break
-        # END SOLUTION
-
-    return total_reward"""
     return agent.play_and_train(env, t_max)
 
 
@@ -81,6 +63,7 @@ if __name__ == "__main__":
             print("mean reward", np.mean(rewards[-100:]))
 
     assert np.mean(rewards[-100:]) > 0.0
+    create_gif(agent, "qlearning", 1000, 1, "artifacts", t_max=int(1e4), env=env)
 
 #################################################
 # 2. Play with QLearningAgentEpsScheduling
