@@ -1,11 +1,11 @@
 import gymnasium as gym
 import numpy as np
-
+import matplotlib.pyplot as plt
 from sarsa import SarsaAgent
 
 # create random array of 5 integers between 0 and 10
 
-env = gym.make("Taxi-v3", render_mode="rgb_array")
+"""env = gym.make("Taxi-v3", render_mode="rgb_array")
 n_actions = env.action_space.n
 sarsa = SarsaAgent(
     learning_rate=0.5,
@@ -14,4 +14,10 @@ sarsa = SarsaAgent(
     policy="softmax",
 )
 state = env.reset()
-sarsa.play_and_train(env, t_max=5)
+sarsa.play_and_train(env, t_max=5)"""
+
+
+# create numpy array and plot it with pyplot table
+data = np.random.randint(0, 10, [5, 5])
+plt.table(cellText=data, loc="center")
+plt.savefig("img/table.png")
