@@ -101,8 +101,6 @@ class SarsaAgent:
 
         # BEGIN SOLUTION
         if self.policy == None:
-            if random.random() < 0.01:
-                return random.choice(self.legal_actions)
             action = self.get_best_action(state)
         elif self.policy == "softmax":
             action = self.policy(self, state)
