@@ -1,3 +1,5 @@
+all: reformat testsuite save_produced
+
 reformat:
 	@poetry run black .
 	@poetry run isort .
@@ -28,3 +30,8 @@ quick_commit:
 
 quick_push: quick_commit
 	@git push
+
+full_test: reformat testsuite save_produced
+	# echo in green
+	@echo "\033[0;32mAll tests passed\033[0m"
+	

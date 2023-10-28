@@ -11,15 +11,17 @@ def create_gif(agent, env, name, artifact_dir=".", t_max=int(1e4), text=""):
     frames = []
 
     s, _ = env.reset()
+    total_reward = 0.0
     for i in tqdm(range(0, t_max)):
         action = agent.get_action(s)
         next_s, r, terminated, truncated, _ = env.step(action)
+        total_reward += r
         s = next_s
         done = terminated or truncated
         img = env.render()
         img = cv2.putText(
             img,
-            text=f"{name} agent, {i} steps, reward: {r}\n" + text,
+            text=f"{name} agent, {i} steps, total reward: {total_reward}\n" + text,
             org=(10, 30),
             fontFace=cv2.FONT_HERSHEY_DUPLEX,
             fontScale=0.5,
