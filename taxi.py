@@ -116,6 +116,11 @@ if __name__ == "__main__":
     # rolling window along the rewards to smooth the curve
 
     window = 50
+    final_ql_reward = np.mean(ql_rewards[-window:])
+    final_ql_eps_reward = np.mean(ql_eps_rewards[-window:])
+    final_sarsa_reward = np.mean(sarsa_rewards[-window:])
+    final_sarsa_softmax_reward = np.mean(sarsa_softmax_rewards[-window:])
+
     ql_rewards = np.array(ql_rewards)
     ql_eps_rewards = np.array(ql_eps_rewards)
     sarsa_rewards = np.array(sarsa_rewards)
@@ -132,6 +137,12 @@ if __name__ == "__main__":
     ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling", color="green")
     ax.plot(sarsa_rewards, label="SARSA", color="blue")
     ax.plot(sarsa_softmax_rewards, label="SARSA Softmax", color="orange")
+
+    ax.text(0, 0, f"Q-Learning: {final_ql_reward:.2f}")
+    ax.text(0, 0, f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}")
+    ax.text(0, 0, f"SARSA: {final_sarsa_reward:.2f}")
+    ax.text(0, 0, f"SARSA Softmax: {final_sarsa_softmax_reward:.2f}")
+
     ax.set_xlabel("Episode")
 
     ax.set_ylabel("Reward")
