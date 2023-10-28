@@ -32,3 +32,16 @@ def test_a(env, agent):
             best = agent.get_best_action(state)
             assert isinstance(best, int)
             assert best in range(env.action_space.n)
+
+
+def test_b(env, agent):
+    env.reset()
+    done = False
+    i = 0
+    while not done:
+        res = env.step(random.choice(range(env.action_space.n)))
+        done = res[3]
+        if i == 1:
+            print(res)
+        i += 1
+    assert i <= 200
