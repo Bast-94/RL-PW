@@ -101,7 +101,7 @@ if __name__ == "__main__":
     )
     sarsa_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa")
     #################################
-    # 3. Play with SARSA with softmax
+    # 4. Play with SARSA with softmax
     #################################
     agent = SarsaAgent(
         learning_rate=0.5,
@@ -110,6 +110,20 @@ if __name__ == "__main__":
         policy="softmax",
     )
     sarsa_softmax_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa-softmax")
+    #################################
+    # 5. Play with Q-learning with softmax
+    #################################
+    agent = QLearningAgentEpsScheduling(
+        learning_rate=0.5,
+        epsilon=0.1,
+        gamma=0.99,
+        legal_actions=list(range(n_actions)),
+        policy="softmax",
+    )
+    ql_eps_softmax_rewards = get_rewards_and_generate_gifs(
+        agent, env, "qlearning-eps-softmax"
+    )
+
     # plot rewards
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(111)
@@ -120,11 +134,13 @@ if __name__ == "__main__":
     final_ql_eps_reward = np.mean(ql_eps_rewards[-window:])
     final_sarsa_reward = np.mean(sarsa_rewards[-window:])
     final_sarsa_softmax_reward = np.mean(sarsa_softmax_rewards[-window:])
+    final_ql_eps_softmax_reward = np.mean(ql_eps_softmax_rewards[-window:])
 
     ql_rewards = np.array(ql_rewards)
     ql_eps_rewards = np.array(ql_eps_rewards)
     sarsa_rewards = np.array(sarsa_rewards)
     sarsa_softmax_rewards = np.array(sarsa_softmax_rewards)
+    ql_eps_softmax_rewards = np.array(ql_eps_softmax_rewards)
 
     ql_rewards = np.convolve(ql_rewards, np.ones(window) / window, mode="valid")
     ql_eps_rewards = np.convolve(ql_eps_rewards, np.ones(window) / window, mode="valid")
@@ -132,12 +148,19 @@ if __name__ == "__main__":
     sarsa_softmax_rewards = np.convolve(
         sarsa_softmax_rewards, np.ones(window) / window, mode="valid"
     )
+    ql_eps_softmax_rewards = np.convolve(
+        ql_eps_softmax_rewards, np.ones(window) / window, mode="valid"
+    )
 
     ax.plot(ql_rewards, label="Q-Learning", color="red")
     ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling", color="green")
     ax.plot(sarsa_rewards, label="SARSA", color="blue")
     ax.plot(sarsa_softmax_rewards, label="SARSA Softmax", color="orange")
-
+    ax.plot(
+        ql_eps_softmax_rewards,
+        label="Q-Learning Epsilon Scheduling Softmax",
+        color="purple",
+    )
     text_kwargs = dict(
         ha="center", va="center", fontsize=12, transform=ax.transAxes, color="black"
     )
@@ -146,6 +169,10 @@ if __name__ == "__main__":
     text_to_plot += "\n" + f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}"
     text_to_plot += "\n" + f"SARSA: {final_sarsa_reward:.2f}"
     text_to_plot += "\n" + f"SARSA Softmax: {final_sarsa_softmax_reward:.2f}"
+    text_to_plot += (
+        "\n"
+        + f"Q-Learning Epsilon Scheduling Softmax: {final_ql_eps_softmax_reward:.2f}"
+    )
     ax.text(0.5, 0.5, text_to_plot, **text_kwargs)
 
     ax.set_xlabel("Episode")

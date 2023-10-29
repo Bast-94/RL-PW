@@ -104,7 +104,8 @@ class QLearningAgent:
               and compare it with your probability
         """
         action = self.legal_actions[0]
-
+        if self.policy is not None:
+            return self.policy(self, state)
         # BEGIN SOLUTION
         if self.epsilon_choice():
             action = random.choice(self.legal_actions)

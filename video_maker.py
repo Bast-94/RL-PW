@@ -21,7 +21,7 @@ def create_gif(agent, env, name, artifact_dir=".", t_max=int(1e4), text=""):
         img = env.render()
         img = cv2.putText(
             img,
-            text=f"{name} agent, {i} steps, total reward: {total_reward}\n" + text,
+            text=f"{name} agent, {i} steps, total reward: {total_reward}" + text,
             org=(10, 30),
             fontFace=cv2.FONT_HERSHEY_DUPLEX,
             fontScale=0.5,
