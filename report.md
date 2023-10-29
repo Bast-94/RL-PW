@@ -82,11 +82,6 @@ Voici comment fonctionne l'ordonnancement de $\varepsilon$:
 - $\varepsilon \leftarrow max(\varepsilon_{end}, \varepsilon_{start} - \frac{t}{T} )$
 - $t \leftarrow t +1$
 
-
-
-
-
-
 ## [SARSA Agent](./sarsa.py) 
 
 
