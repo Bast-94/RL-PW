@@ -14,14 +14,12 @@ matplotlib = {version = "^3.8.0", allow-prereleases = true}
 gymnasium = {extras = ["classic-control", "toy-text"], version = "^0.29.1", allow-prereleases = true}
 pytest = {version = "^6.2.5", allow-prereleases = true}
 tqdm = {version = "^4.62.3", allow-prereleases = true}
-
-
-isort = "^5.12.0"
-opencv-python-headless = "^4.8.1.78"
-opencv-contrib-python-headless = "^4.8.1.78"
-imageio = "^2.31.6"
-pandas = "^2.1.2"
-tabulate = "^0.9.0"
+isort = {version = "^5.12.0", allow-prereleases = true}
+opencv-python-headless = {version ="^4.8.1.78", allow-prereleases = true}
+opencv-contrib-python-headless = {version ="^4.8.1.78", allow-prereleases = true}
+imageio = {version ="^2.31.6", allow-prereleases = true}
+pandas = {version ="^2.1.2", allow-prereleases = true}
+tabulate = {version ="^0.9.0", allow-prereleases = true}
 
 
 [tool.poetry.group.dev.dependencies]
