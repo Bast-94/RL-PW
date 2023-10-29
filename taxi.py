@@ -72,6 +72,13 @@ def get_rewards_and_generate_gifs(agent, env, name):
     return rewards
 
 
+def smooth_curve(array: np.ndarray, window_size: int = 50) -> np.ndarray:
+    """
+    Smooths the curve by averaging values with a given window size.
+    """
+    return np.convolve(array, np.ones(window_size) / window_size, mode="valid")
+
+
 if __name__ == "__main__":
     #################################################
     # 1. Play with QLearningAgent
@@ -129,12 +136,20 @@ if __name__ == "__main__":
     ax = fig.add_subplot(111)
     # rolling window along the rewards to smooth the curve
 
-    window = 50
+    window = 100
     final_ql_reward = np.mean(ql_rewards[-window:])
     final_ql_eps_reward = np.mean(ql_eps_rewards[-window:])
     final_sarsa_reward = np.mean(sarsa_rewards[-window:])
     final_sarsa_softmax_reward = np.mean(sarsa_softmax_rewards[-window:])
     final_ql_eps_softmax_reward = np.mean(ql_eps_softmax_rewards[-window:])
+
+    # compute the final std for each algorithm
+
+    std_ql_reward = np.std(ql_rewards[-window:])
+    std_ql_eps_reward = np.std(ql_eps_rewards[-window:])
+    std_sarsa_reward = np.std(sarsa_rewards[-window:])
+    std_sarsa_softmax_reward = np.std(sarsa_softmax_rewards[-window:])
+    std_ql_eps_softmax_reward = np.std(ql_eps_softmax_rewards[-window:])
 
     ql_rewards = np.array(ql_rewards)
     ql_eps_rewards = np.array(ql_eps_rewards)
@@ -158,20 +173,30 @@ if __name__ == "__main__":
     ax.plot(sarsa_softmax_rewards, label="SARSA Softmax", color="orange")
     ax.plot(
         ql_eps_softmax_rewards,
-        label="Q-Learning Epsilon Scheduling Softmax",
+        label="Q-Learning Softmax",
         color="purple",
     )
     text_kwargs = dict(
         ha="center", va="center", fontsize=12, transform=ax.transAxes, color="black"
     )
     text_to_plot = f"Mean reward over last {window} episodes"
-    text_to_plot += "\n" + f"Q-Learning: {final_ql_reward:.2f}"
-    text_to_plot += "\n" + f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}"
-    text_to_plot += "\n" + f"SARSA: {final_sarsa_reward:.2f}"
-    text_to_plot += "\n" + f"SARSA Softmax: {final_sarsa_softmax_reward:.2f}"
+    text_to_plot += (
+        "\n" + f"Q-Learning: {final_ql_reward:.2f}, std: {std_ql_reward:.2f}"
+    )
     text_to_plot += (
         "\n"
-        + f"Q-Learning Epsilon Scheduling Softmax: {final_ql_eps_softmax_reward:.2f}"
+        + f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}, std: {std_ql_eps_reward:.2f}"
+    )
+    text_to_plot += (
+        "\n" + f"SARSA: {final_sarsa_reward:.2f}, std: {std_sarsa_reward:.2f}"
+    )
+    text_to_plot += (
+        "\n"
+        + f"SARSA Softmax: {final_sarsa_softmax_reward:.2f} ,std: {std_sarsa_softmax_reward:.2f}"
+    )
+    text_to_plot += (
+        "\n"
+        + f"Q-Learning : {final_ql_eps_softmax_reward:.2f}, std: {std_ql_eps_softmax_reward:.2f}"
     )
     ax.text(0.5, 0.5, text_to_plot, **text_kwargs)
 
