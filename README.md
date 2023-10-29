@@ -3,3 +3,14 @@
 # Reinforcement Learning TP3
 
 Indications dans le fichier taxi.py
+
+## Contenu du projet
+
+- [Rapport du TP](./report.md)
+- [Agent Qlearning](./qlearning.py)
+- [Agent Qlearning avec ordonnancement de $\varepsilon$](./qlearning_eps_scheduling.py)
+- [Agent SARSA](./sarsa.py)
+- [Script principal](./taxi.py) pour executer :
+    ```sh
+    make taxi
+    ```
