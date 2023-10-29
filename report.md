@@ -60,7 +60,7 @@ On fixe $\alpha$ le taux d'apprentissage `learning_rate`
 
 
 
-## Q-learning avec un ordonnancement de $\varepsilon$
+## [Q-learning avec un ordonnancement de $\varepsilon$](./qlearning_eps_scheduling.py)
 
 
 L'ordonnancement de $\varepsilon$ consiste à fixer une valeur de départ relativement élevée ($\varepsilon_{start}$) réduire epsilon au fur et à mesure de l'exploration de l'agent vers ($\varepsilon_{end}$). Le but est de permettre une large exploration au début et de se focaliser progressivement sur les valeurs de $Q[s,a]$. La différence d'implémentation avec `QLearningAgent` se situe dans la méthode `update`.
@@ -87,7 +87,7 @@ Voici comment fonctionne l'ordonnancement de $\varepsilon$:
 
 
 
-## SARSA Agent
+## [SARSA Agent](./sarsa.py) 
 
 
 ### Implementation
@@ -124,7 +124,7 @@ L'agent Sarsa fonctionne différemment que l'agent Q-learning, c'est la raison p
 
 
 
-### Etude la politique softmax
+### [Etude la politique softmax](./policy.py)
 
 
 La fonction softmax est définie par:
