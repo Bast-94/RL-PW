@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     print("SARSA")
     agent = SarsaAgent(
-        learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions))
+        learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions)), epsilon=0.05
     )
     sarsa_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa")
     #################################
@@ -188,7 +188,7 @@ if __name__ == "__main__":
         + f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}, std: {std_ql_eps_reward:.2f}"
     )
     text_to_plot += (
-        "\n" + f"SARSA: {final_sarsa_reward:.2f}, std: {std_sarsa_reward:.2f}"
+        "\n" + f"SARSA with $\varepsilon$ = 0.05 : {final_sarsa_reward:.2f}, std: {std_sarsa_reward:.2f}"
     )
     text_to_plot += (
         "\n"
@@ -196,7 +196,7 @@ if __name__ == "__main__":
     )
     text_to_plot += (
         "\n"
-        + f"Q-Learning : {final_ql_eps_softmax_reward:.2f}, std: {std_ql_eps_softmax_reward:.2f}"
+        + f"Q-Learning with softmax: {final_ql_eps_softmax_reward:.2f}, std: {std_ql_eps_softmax_reward:.2f}"
     )
     ax.text(0.5, 0.5, text_to_plot, **text_kwargs)
 
