@@ -34,12 +34,12 @@ jobs:
     - name: Generate videos
       run: |
         mkdir artifacts && make taxi
-    - name: download production artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: produced-videos
-        path: |
-          img
+    # - name: download production artifacts
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: produced-videos
+    #     path: |
+    #       img
           
     - name: Create report file
       run: date +%s > report.txt
