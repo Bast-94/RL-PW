@@ -1,4 +1,4 @@
-<center><h1>Rapport du TP3 de Reinforcement learning par [Bastien Hoorelbeke](https://github.com/Bast-94) encadré par [Pierre-Louis Guhur](https://github.com/guhur)</h1></center>
+# Rapport du TP3 de Reinforcement learning par [Bastien Hoorelbeke](https://github.com/Bast-94) encadré par [Pierre-Louis Guhur](https://github.com/guhur)
 
 Dans ce travail pratique, plusieurs méthodes d'apprentissage par renforcement seront abordées.
 
