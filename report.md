@@ -139,7 +139,7 @@ Ainsi chaque composante $softmax(x)_i$ va donner une probabilit√© qui augmente √
 ### Visuels
 
 
-|  Q-learning | Q-learning eps | SARSA | SARSA with softmax policy | Q-learning with softmax policy|
+| Nombre d'episodes | Q-learning | Q-learning eps | SARSA | SARSA with softmax policy | Q-learning with softmax policy|
 |-----:|:-------------|:-----------------|:--------|:---------------------|:---------------------|
 | 250 | ![](img/qlearning-250-ep.gif)| ![](img/qlearning-eps-250-ep.gif) | ![](img/sarsa-250-ep.gif) | ![](img/sarsa-softmax-250-ep.gif) | ![](img/qlearning-eps-softmax-250-ep.gif) |
 | 500 | ![](img/qlearning-500-ep.gif)| ![](img/qlearning-eps-500-ep.gif) | ![](img/sarsa-500-ep.gif) | ![](img/sarsa-softmax-500-ep.gif) | ![](img/qlearning-eps-softmax-500-ep.gif) |
