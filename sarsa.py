@@ -20,6 +20,7 @@ class SarsaAgent:
         gamma: float,
         legal_actions: t.List[Action],
         policy=None,
+        epsilon=0.05
     ):
         """
         SARSA  Agent
@@ -30,6 +31,7 @@ class SarsaAgent:
         self._qvalues: QValues = defaultdict(lambda: defaultdict(int))
         self.learning_rate = learning_rate
         self.gamma = gamma
+        self.epsilon = epsilon
         if policy == "softmax":
             self.policy = softmax_policy
         else:
@@ -101,6 +103,8 @@ class SarsaAgent:
 
         # BEGIN SOLUTION
         if self.policy == None:
+            if(random.random()<self.epsilon):
+                return random.choice(self.legal_actions)
             action = self.get_best_action(state)
         elif self.policy == softmax_policy:
             action = self.policy(self, state)
