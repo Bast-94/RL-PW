@@ -80,6 +80,8 @@ def smooth_curve(array: np.ndarray, window_size: int = 50) -> np.ndarray:
 
 
 if __name__ == "__main__":
+    
+    trial = []
     #################################################
     # 1. Play with QLearningAgent
     #################################################
@@ -88,7 +90,7 @@ if __name__ == "__main__":
         learning_rate=0.5, epsilon=0.1, gamma=0.99, legal_actions=list(range(n_actions))
     )
     ql_rewards = get_rewards_and_generate_gifs(agent, env, "qlearning")
-
+    trial.append(dict(agent=agent,name="Q-Learning", rewards=ql_rewards,color_curve="blue"))
     #################################################
     # 2. Play with QLearningAgentEpsScheduling
     #################################################
@@ -98,17 +100,24 @@ if __name__ == "__main__":
     )
 
     ql_eps_rewards = get_rewards_and_generate_gifs(agent, env, "qlearning-eps")
-    ####################
-    # 3. Play with SARSA
-    ####################
+    trial.append(dict(agent=agent,name="Q-Learning Epsilon Scheduling", rewards=ql_eps_rewards,color_curve="red"))
+    
 
     print("SARSA")
     agent = SarsaAgent(
-        learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions))
+        learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions)),epsilon=0.05
     )
     sarsa_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa")
+    trial.append(dict(agent=agent,name="SARSA", rewards=sarsa_rewards,color_curve="green"))
+    #####################################
+    # 4. Play with SARSA with epsilon = 0
+    #####################################
+    print("SARSA EPSILON = 0")
+    agent = SarsaAgent(learning_rate=0.5, gamma=0.99, legal_actions=list(range(n_actions)),epsilon=0.0)
+    sarsa_eps_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa-eps0")
+    trial.append(dict(agent=agent,name="SARSA Epsilon = 0", rewards=sarsa_eps_rewards,color_curve="black"))
     #################################
-    # 4. Play with SARSA with softmax
+    # 5. Play with SARSA with softmax
     #################################
     agent = SarsaAgent(
         learning_rate=0.5,
@@ -117,8 +126,9 @@ if __name__ == "__main__":
         policy="softmax",
     )
     sarsa_softmax_rewards = get_rewards_and_generate_gifs(agent, env, "sarsa-softmax")
+    trial.append(dict(agent=agent,name="SARSA Softmax", rewards=sarsa_softmax_rewards,color_curve="orange"))
     #################################
-    # 5. Play with Q-learning with softmax
+    # 6. Play with Q-learning with softmax
     #################################
     agent = QLearningAgentEpsScheduling(
         learning_rate=0.5,
@@ -130,74 +140,25 @@ if __name__ == "__main__":
     ql_eps_softmax_rewards = get_rewards_and_generate_gifs(
         agent, env, "qlearning-eps-softmax"
     )
-
+    trial.append(dict(agent=agent,name="Q-Learning Softmax", rewards=ql_eps_softmax_rewards,color_curve="purple"))
     # plot rewards
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(111)
     # rolling window along the rewards to smooth the curve
 
     window = 100
-    final_ql_reward = np.mean(ql_rewards[-window:])
-    final_ql_eps_reward = np.mean(ql_eps_rewards[-window:])
-    final_sarsa_reward = np.mean(sarsa_rewards[-window:])
-    final_sarsa_softmax_reward = np.mean(sarsa_softmax_rewards[-window:])
-    final_ql_eps_softmax_reward = np.mean(ql_eps_softmax_rewards[-window:])
-
-    # compute the final std for each algorithm
-
-    std_ql_reward = np.std(ql_rewards[-window:])
-    std_ql_eps_reward = np.std(ql_eps_rewards[-window:])
-    std_sarsa_reward = np.std(sarsa_rewards[-window:])
-    std_sarsa_softmax_reward = np.std(sarsa_softmax_rewards[-window:])
-    std_ql_eps_softmax_reward = np.std(ql_eps_softmax_rewards[-window:])
-
-    ql_rewards = np.array(ql_rewards)
-    ql_eps_rewards = np.array(ql_eps_rewards)
-    sarsa_rewards = np.array(sarsa_rewards)
-    sarsa_softmax_rewards = np.array(sarsa_softmax_rewards)
-    ql_eps_softmax_rewards = np.array(ql_eps_softmax_rewards)
-
-    ql_rewards = np.convolve(ql_rewards, np.ones(window) / window, mode="valid")
-    ql_eps_rewards = np.convolve(ql_eps_rewards, np.ones(window) / window, mode="valid")
-    sarsa_rewards = np.convolve(sarsa_rewards, np.ones(window) / window, mode="valid")
-    sarsa_softmax_rewards = np.convolve(
-        sarsa_softmax_rewards, np.ones(window) / window, mode="valid"
-    )
-    ql_eps_softmax_rewards = np.convolve(
-        ql_eps_softmax_rewards, np.ones(window) / window, mode="valid"
-    )
-
-    ax.plot(ql_rewards, label="Q-Learning", color="red")
-    ax.plot(ql_eps_rewards, label="Q-Learning Epsilon Scheduling", color="green")
-    ax.plot(sarsa_rewards, label="SARSA", color="blue")
-    ax.plot(sarsa_softmax_rewards, label="SARSA Softmax", color="orange")
-    ax.plot(
-        ql_eps_softmax_rewards,
-        label="Q-Learning Softmax",
-        color="purple",
-    )
-    text_kwargs = dict(
-        ha="center", va="center", fontsize=12, transform=ax.transAxes, color="black"
+    
+    text_kwargs = dict(ha="center", va="center", fontsize=12, transform=ax.transAxes, color="black"
     )
     text_to_plot = f"Mean reward over last {window} episodes"
-    text_to_plot += (
-        "\n" + f"Q-Learning: {final_ql_reward:.2f}, std: {std_ql_reward:.2f}"
-    )
-    text_to_plot += (
-        "\n"
-        + f"Q-Learning Epsilon Scheduling: {final_ql_eps_reward:.2f}, std: {std_ql_eps_reward:.2f}"
-    )
-    text_to_plot += (
-        "\n" + f"SARSA: {final_sarsa_reward:.2f}, std: {std_sarsa_reward:.2f}"
-    )
-    text_to_plot += (
-        "\n"
-        + f"SARSA Softmax: {final_sarsa_softmax_reward:.2f} ,std: {std_sarsa_softmax_reward:.2f}"
-    )
-    text_to_plot += (
-        "\n"
-        + f"Q-Learning : {final_ql_eps_softmax_reward:.2f}, std: {std_ql_eps_softmax_reward:.2f}"
-    )
+    for trial in trial:
+        trial['final_reward'] = np.mean(trial['rewards'][-window:])
+        trial['std_reward'] = np.std(trial['rewards'][-window:])
+        trial['smooth_rewards'] = np.convolve(trial['rewards'], np.ones(window) / window, mode="valid")
+        ax.plot(trial['smooth_rewards'], label=trial['name'],color=trial['color_curve'])
+        text_to_plot += "\n" + f"{trial['name']}: {trial['final_reward']:.2f}, std: {trial['std_reward']:.2f}"
+        
+    
     ax.text(0.5, 0.5, text_to_plot, **text_kwargs)
 
     ax.set_xlabel("Episode")

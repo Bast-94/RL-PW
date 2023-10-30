@@ -171,3 +171,13 @@ output
 *.avi
 trials.py
 to_markdown.py
+__pycache__/policy.cpython-310.pyc
+__pycache__/qlearning.cpython-310.pyc
+__pycache__/qlearning_eps_scheduling.cpython-310.pyc
+__pycache__/sarsa.cpython-310.pyc
+__pycache__/video_maker.cpython-310.pyc
+artifact_url.txt
+artifacts.json
+get_artifact.sh
+poetry.lock
+to_markdown.py

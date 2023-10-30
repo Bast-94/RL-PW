@@ -110,7 +110,7 @@ L'agent Sarsa fonctionne différemment que l'agent Q-learning, c'est la raison p
 - $a' \leftarrow \text{get action}_{\pi}(s')$
 
 
-- $Q(s, a) \leftarrow Q(s, a) + α * [r + γ * (Q(s', a')) - Q(s, a)]$, appel à la méthode `SarsaAgent.update(state: State, action: Action, reward: t.SupportsFloat, next_state: State, next_action: Action)`
+- $Q(s, a) \leftarrow Q(s, a) + \alpha * [r + \gamma * (Q(s', a')) - Q(s, a)]$, appel à la méthode `SarsaAgent.update(state: State, action: Action, reward: t.SupportsFloat, next_state: State, next_action: Action)`
 - $s \leftarrow s'$
 
 
@@ -140,11 +140,11 @@ Ainsi chaque composante $softmax(x)_i$ va donner une probabilité qui augmente �
 ### Visuels
 
 
-| | Q-learning | Q-learning eps | SARSA | SARSA with softmax policy | Q-learning with softmax policy|
-|-----:|:-------------|:-----------------|:--------|:---------------------|:---------------------|
-| 250 | ![](img/qlearning-250-ep.gif)| ![](img/qlearning-eps-250-ep.gif) | ![](img/sarsa-250-ep.gif) | ![](img/sarsa-softmax-250-ep.gif) | ![](img/qlearning-eps-softmax-250-ep.gif) |
-| 500 | ![](img/qlearning-500-ep.gif)| ![](img/qlearning-eps-500-ep.gif) | ![](img/sarsa-500-ep.gif) | ![](img/sarsa-softmax-500-ep.gif) | ![](img/qlearning-eps-softmax-500-ep.gif) |
-| 1000 | ![](img/qlearning-1000-ep.gif) | ![](img/qlearning-eps-1000-ep.gif) | ![](img/sarsa-1000-ep.gif) | ![](img/sarsa-softmax-1000-ep.gif) | ![](img/qlearning-eps-softmax-1000-ep.gif) |
+| Nombre d'episodes | Q-learning | Q-learning eps | SARSA | SARSA with softmax policy | Q-learning with softmax policy| SARSA avec $\varepsilon = 0$ 
+|-----:|:-------------|:-----------------|:--------|:---------------------|:---------------------| :---------------------|
+| 250 | ![](img/qlearning-250-ep.gif)| ![](img/qlearning-eps-250-ep.gif) | ![](img/sarsa-250-ep.gif) | ![](img/sarsa-softmax-250-ep.gif) | ![](img/qlearning-eps-softmax-250-ep.gif) | ![](./img/sarsa-eps0-250-ep.gif) |
+| 500 | ![](img/qlearning-500-ep.gif)| ![](img/qlearning-eps-500-ep.gif) | ![](img/sarsa-500-ep.gif) | ![](img/sarsa-softmax-500-ep.gif) | ![](img/qlearning-eps-softmax-500-ep.gif) | ![](./img/sarsa-eps0-500-ep.gif) |
+| 1000 | ![](img/qlearning-1000-ep.gif) | ![](img/qlearning-eps-1000-ep.gif) | ![](img/sarsa-1000-ep.gif) | ![](img/sarsa-softmax-1000-ep.gif) | ![](img/qlearning-eps-softmax-1000-ep.gif) | ![](./img/sarsa-eps0-1000-ep.gif) |
 
 
 ### Performances globales
@@ -153,7 +153,7 @@ Ainsi chaque composante $softmax(x)_i$ va donner une probabilité qui augmente �
 ![](img/rewards.png)
 
 
-On peut remarquer SARSA sans softmax possède les meilleures performances en se référant à la récompense moyenne au cours des 100 derniers épisodes.
+On peut remarquer que Q-learning et Q-learning avec ordonnacement de $\varepsilon$ sont plus efficaces que SARSA lorsque l'on compare les moyennes des 100 dernieres recompenses. Aussi lorsque l'on regarde les ecarts-types les q-learning offrent une plus grande certitude que la recompense finale soit positive. En revanche lorsque nous laissons aucune place au hasard pour SARSA avec $\varepsilon=0$, ce dernier est bien plus efficace que Q-learning.
 
 
 Concernant les deux agents sous politique $softmax$, leur progression est plus lente que les agents à la politique $\varepsilon \text{-greedy}$ mais elle offre de meilleures sur les derniers épisodes en termes de récompense totale. De plus est leur écart-type est bien plus faible ce qui laisse penser que ces agents obtiennent une récompense moyenne élevée avec une plus grande certitude.

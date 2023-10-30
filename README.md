@@ -14,3 +14,4 @@ Indications dans le fichier taxi.py
     ```sh
     make taxi
     ```
+- [GIFS des entrainement](./img)
