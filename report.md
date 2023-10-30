@@ -1,5 +1,4 @@
-# Rapport du TP3 de Reinforcement learning par [Bastien Hoorelbeke](https://github.com/Bast-94) encadré par [Pierre-Louis Guhur](https://github.com/guhur)
-
+<center><h1>Rapport du TP3 de Reinforcement learning par [Bastien Hoorelbeke](https://github.com/Bast-94) encadré par [Pierre-Louis Guhur](https://github.com/guhur)</h1></center>
 
 Dans ce travail pratique, plusieurs méthodes d'apprentissage par renforcement seront abordées.
 
@@ -140,7 +139,7 @@ Ainsi chaque composante $softmax(x)_i$ va donner une probabilité qui augmente �
 ### Visuels
 
 
-| | Q-learning | Q-learning eps | SARSA | SARSA with softmax policy | Q-learning with softmax policy|
+|  Q-learning | Q-learning eps | SARSA | SARSA with softmax policy | Q-learning with softmax policy|
 |-----:|:-------------|:-----------------|:--------|:---------------------|:---------------------|
 | 250 | ![](img/qlearning-250-ep.gif)| ![](img/qlearning-eps-250-ep.gif) | ![](img/sarsa-250-ep.gif) | ![](img/sarsa-softmax-250-ep.gif) | ![](img/qlearning-eps-softmax-250-ep.gif) |
 | 500 | ![](img/qlearning-500-ep.gif)| ![](img/qlearning-eps-500-ep.gif) | ![](img/sarsa-500-ep.gif) | ![](img/sarsa-softmax-500-ep.gif) | ![](img/qlearning-eps-softmax-500-ep.gif) |
