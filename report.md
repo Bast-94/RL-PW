@@ -35,7 +35,7 @@ On fixe $\alpha$ le taux d'apprentissage `learning_rate`
 
 
 - $\text{While not terminated}$:
-
+</h1></center>
 
 - $a \leftarrow \text{get action}_{\pi}(s)$ // choix de l'action à l'état $s$ selon la politique $\pi$ voir la méthode `QLearningAgent.get_action(state : State)`
 
@@ -49,7 +49,7 @@ On fixe $\alpha$ le taux d'apprentissage `learning_rate`
 
 
 
-#### Politique $\varepsilon \text{-greedy}$
+#### Politique $ \varepsilon \text{-greedy} $
 
 
 - $\mathbb{P}(a=max_{a' \in \mathcal{A}}(Q(s', a'))\ |\ s' ) = 1- \varepsilon$
